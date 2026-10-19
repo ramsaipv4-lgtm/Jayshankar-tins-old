@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AKS Seafood — Walkthrough</title>
+<style>
+  :root { --accent:#1F2F54; --bg:#E8EDF7; --ink:#1b2438; --mute:#5d6882; --card:#ffffff; --line:#cfd6e4; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:var(--bg); transition: background .35s; min-height:100vh; }
+  button, select, textarea { font: inherit; }
+
+  /* ---------- top bar ---------- */
+  .top { display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding:12px 20px; background:var(--accent); color:#fff; transition: background .35s; }
+  .brand { font-weight:800; letter-spacing:.06em; font-size:18px; }
+  .stepname { flex:1; min-width:200px; font-size:15px; opacity:.92; }
+  .who { display:flex; align-items:center; gap:10px; flex-wrap:wrap; max-width:100%; }
+  .who label { font-size:13px; opacity:.85; }
+  .who select { padding:7px 10px; border-radius:8px; border:0; flex:1 1 190px; min-width:0; max-width:100%; font-weight:600; }
+  .hi { font-weight:700; }
+  .now { font-size:13px; opacity:.85; }
+  .now:empty { display:none; }
+  div.proxy { background:#fff7e6; border:1px solid #f2c97a; border-radius:10px; padding:9px 12px; font-size:14px; }
+  .state.admin { background:#2A6FBA; }
+
+  /* ---------- progress ---------- */
+  .progress { padding:0 12px; overflow-x:auto; }
+  .barin { display:flex; align-items:center; gap:9px; position:relative; min-width:max-content; padding:58px 70px 58px; }
+  .barin::before { content:""; position:absolute; left:48px; right:48px; top:50%; height:3px; background:var(--line); border-radius:2px; }
+  .pt { position:relative; border:0; padding:0; background:#fff; border:2px solid #9aa6c0; border-radius:50%; cursor:pointer; flex:none; transition: transform .15s, background .15s; }
+  .pt.dot  { width:14px; height:14px; }
+  .pt.node { width:28px; height:28px; border-width:3px; }
+  .pt.done { background:#44527a; border-color:#44527a; }
+  .pt.mine { box-shadow:0 0 0 3px var(--accent); }
+  .pt.cur  { background:var(--accent); border-color:var(--accent); transform:scale(1.45); z-index:2; }
+  .pt:hover { transform:scale(1.3); }
+  .pt:focus-visible { outline:3px solid #f2a33a; outline-offset:3px; }
+  .lab { position:absolute; left:50%; transform:translateX(-50%); white-space:nowrap; font-size:13px; font-weight:600; color:var(--ink); pointer-events:none; }
+  .lab.up   { bottom:36px; }
+  .lab.down { top:36px; }
+  .node.cur .lab { color:var(--accent); font-weight:800; }
+  .nodenum { position:absolute; inset:0; display:grid; place-items:center; font-size:12px; font-weight:800; color:#44527a; }
+  .node.done .nodenum, .node.cur .nodenum { color:#fff; }
+
+  /* ---------- main ---------- */
+  main { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(300px,.95fr); gap:22px; padding:6px 22px 18px; max-width:1300px; margin:0 auto; }
+  @media (max-width: 900px) { main { grid-template-columns:1fr; } }
+  .stage { display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .frame { position:relative; width:100%; display:grid; place-items:center; }
+  .shot { max-width:100%; max-height:68vh; border-radius:14px; cursor:pointer; box-shadow:0 10px 30px rgba(20,30,60,.18); background:#fff; }
+  .shot:hover { box-shadow:0 12px 34px rgba(20,30,60,.28); }
+  .shot.web { max-height:62vh; }
+  .devtoggle { display:inline-flex; border:2px solid var(--accent); border-radius:999px; overflow:hidden; background:#fff; }
+  .devtoggle button { border:0; background:transparent; color:var(--accent); font-weight:700; padding:6px 16px; cursor:pointer; }
+  .devtoggle button[aria-pressed="true"] { background:var(--accent); color:#fff; }
+  .devtoggle button:disabled { opacity:.4; cursor:default; }
+  /* frames drawn by the page, so the pictures can be pure screens */
+  .bezel { display:inline-block; position:relative; background:#0e1424; padding:11px; border-radius:48px; box-shadow:0 22px 54px rgba(15,25,50,.32), inset 0 0 0 2px #2b3552; }
+  .bezel::before { content:""; position:absolute; top:19px; left:50%; transform:translateX(-50%); width:78px; height:22px; background:#0e1424; border-radius:14px; z-index:2; }
+  .bezel .shot { display:block; border-radius:38px; box-shadow:none; max-height:66vh; max-width:100%; }
+  .browser { width:min(920px,100%); background:#fff; border-radius:14px; overflow:hidden; border:1px solid #d3d9e6; box-shadow:0 20px 50px rgba(15,25,50,.24); }
+  .browser .bar { display:flex; align-items:center; gap:12px; height:36px; padding:0 14px; background:#eef1f6; border-bottom:1px solid #dde3ee; }
+  .browser .dots { display:flex; gap:7px; }
+  .browser .dots i { width:11px; height:11px; border-radius:50%; background:#ff5f57; }
+  .browser .dots i:nth-child(2) { background:#febc2e; }
+  .browser .dots i:nth-child(3) { background:#28c840; }
+  .browser .url { flex:1; max-width:380px; margin:0 auto; text-align:center; background:#fff; border:1px solid #dde3ee; border-radius:999px; font-size:12px; color:#6b778c; padding:3px 10px; }
+  .browser .shot { display:block; width:100%; height:auto; max-height:none; border-radius:0; box-shadow:none; }
+  .check { display:flex; align-items:center; gap:8px; font-size:13px; }
+  .hint { font-size:13px; color:var(--mute); }
+  .hint b { color:var(--accent); }
+
+  /* missing-image placeholder and the "nothing for you now" dashboard share one look */
+  .ph, .dash { background:var(--card); border:2px dashed var(--line); border-radius:18px; padding:20px; display:flex; flex-direction:column; gap:10px; cursor:pointer; text-align:left; }
+  .ph.phone, .dash { width:min(340px,92%); min-height:min(560px,68vh); }
+  .ph.web { width:min(720px,100%); min-height:min(430px,60vh); }
+  .ph .big { font-size:20px; font-weight:800; color:var(--accent); }
+  .ph code { background:#eef1f8; padding:3px 7px; border-radius:6px; font-size:13px; word-break:break-all; }
+  .ph small { color:var(--mute); }
+  .dash { border:2px solid var(--line); border-style:solid; padding:0; overflow:hidden; }
+  .dash .dh { background:var(--accent); color:#fff; padding:12px 16px; font-weight:800; letter-spacing:.06em; transition: background .35s; }
+  .dash .dm { padding:14px 16px 0; display:flex; justify-content:space-between; align-items:baseline; }
+  .dash .dm .hi { font-size:22px; }
+  .dash .dm .rl { color:var(--mute); font-size:14px; }
+  .dash .line { margin:0; padding:6px 16px; font-size:16px; line-height:1.45; }
+  .dash .tiles { display:grid; gap:8px; padding:8px 16px 16px; margin-top:auto; }
+  .dash .tiles div { background:var(--bg); border-radius:10px; padding:9px 11px; display:flex; flex-direction:column; gap:2px; }
+  .dash .tiles b { font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--mute); }
+  .dash .tiles span { font-size:14px; font-weight:600; }
+  .state { display:inline-block; align-self:flex-start; padding:4px 12px; border-radius:999px; font-size:13px; font-weight:800; letter-spacing:.03em; color:#fff; }
+  .state.turn  { background:#2FB36D; }
+  .state.fyi   { background:#2A6FBA; }
+  .state.wait  { background:#F2A33A; }
+  .state.done  { background:#6f7b95; }
+  .dash .state { margin:10px 16px 0; }
+
+  /* ---------- info panel ---------- */
+  .info { background:var(--card); border-radius:16px; padding:18px 20px; align-self:start; display:flex; flex-direction:column; gap:10px; box-shadow:0 2px 10px rgba(20,30,60,.08); }
+  .info h2 { margin:0; font-size:22px; }
+  .info .count { color:var(--mute); font-size:13px; }
+  .info p { margin:0; line-height:1.5; }
+  .info h3 { margin:6px 0 0; font-size:13px; letter-spacing:.05em; text-transform:uppercase; color:var(--mute); }
+  .info ul { margin:0; padding-left:20px; display:flex; flex-direction:column; gap:4px; }
+  .next { background:var(--bg); border-radius:10px; padding:9px 12px; font-size:14px; }
+  textarea { width:100%; min-height:74px; border:1px solid var(--line); border-radius:10px; padding:9px; resize:vertical; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; }
+  .btn { border:0; border-radius:10px; padding:9px 15px; font-weight:700; cursor:pointer; background:var(--accent); color:#fff; transition: background .35s; }
+  .btn.alt { background:#e3e8f3; color:var(--ink); }
+  .btn:disabled { opacity:.4; cursor:default; }
+
+  footer { max-width:1300px; margin:0 auto; padding:6px 22px 26px; color:var(--mute); font-size:13px; display:flex; flex-direction:column; gap:8px; }
+  footer .row { align-items:center; }
+  .missing { background:#fff; border-radius:10px; padding:10px 14px; max-height:220px; overflow:auto; font-size:13px; columns:3; }
+  .missing div { break-inside:avoid; padding:1px 0; }
+  .missing .ok { color:#2F8F5B; }
+  .missing .no { color:#c0392b; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand" id="brand">AKS SEAFOOD</div>
+  <div class="stepname" id="stepname"></div>
+  <div class="who"><span class="hi" id="hi"></span><span class="now" id="now"></span><label for="role">User</label><select id="role" aria-label="Choose the user"></select></div>
+</header>
+
+<nav class="progress" aria-label="Progress through the day"><div class="barin" id="bar"></div></nav>
+
+<main>
+  <section class="stage">
+    <div class="devtoggle" id="devtoggle" role="group" aria-label="Phone or website version" hidden>
+      <button type="button" id="devphone" aria-pressed="false">Phone</button>
+      <button type="button" id="devweb" aria-pressed="true">Website</button>
+    </div>
+    <div class="frame" id="frame"></div>
+    <div class="hint" id="hint"></div>
+  </section>
+  <aside class="info">
+    <div class="count" id="count"></div>
+    <h2 id="title"></h2>
+    <span class="state" id="state"></span>
+    <div class="proxy" id="proxy" hidden></div>
+    <p id="story"></p>
+    <div class="next" id="next"></div>
+    <h3>Ask on this screen</h3>
+    <ul id="asks"></ul>
+    <h3>Your comment on this screen</h3>
+    <textarea id="comment" placeholder="Type what should change, or what is missing…"></textarea>
+    <div class="row">
+      <button class="btn alt" id="prev">&#9664; Back</button>
+      <button class="btn" id="nextbtn">Next &#9654;</button>
+      <button class="btn alt" id="export">Save comments</button>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <div class="row"><span id="imgcount"></span><button class="btn alt" id="toggle">Show the list of images</button></div>
+  <label class="check"><input type="checkbox" id="frames" checked> Draw the phone and browser frame around the pictures (turn this off if your pictures already include one)</label>
+  <div class="missing" id="missing" hidden></div>
+  <div>Sample data and placeholder names throughout. Click the screen (or press the right arrow) to go on; use the user menu to see the same moment as someone else.</div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  var D = window.AKS, R = D.roles, S = D.steps, M = D.moments;
+  var roleById = {}; R.forEach(function (r) { roleById[r.id] = r; });
+  var stepById = {}; S.forEach(function (s, i) { s.n = i + 1; stepById[s.id] = s; });
+  var firstOfStep = {}; M.forEach(function (m, i) { if (firstOfStep[m.step] === undefined) firstOfStep[m.step] = i; });
+
+  var cur = 0, role = 'admin', auto = true, device = 'web';   // auto = follow the workflow: the user menu follows whoever acts at each moment
+  var found = {};            // image id -> 'png' | 'jpg' | false, filled in by the checker
+  var KEY = 'aks-walkthrough-comments';
+
+  function $(id) { return document.getElementById(id); }
+  function store(get, v) {
+    try { if (get) return JSON.parse(localStorage.getItem(KEY) || '{}'); localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) { return get ? (window.__c = window.__c || {}) : (window.__c = v); }
+  }
+
+  /* What a user can do at a moment: 'turn' (acts), 'fyi' (is shown a view), or null. */
+  function strict(m, r) {
+    if (m.who.indexOf(r) >= 0) return 'turn';
+    if (m.views && m.views[r]) return 'fyi';
+    return null;
+  }
+  /* The Admin (the owner) can do everything the other users do. At a moment that is not theirs they get their OWN phone and
+     website screens for it ('oversee': what that team recorded, with Edit where it makes sense). If a moment has no such
+     screen they are shown the acting team's phone screen ('proxy'). Small businesses have owners who step in. */
+  function involvement(m, r) {
+    if (strict(m, r)) return strict(m, r);
+    if (r === 'admin' && D.adminDoesAll) return m.adminImg ? 'oversee' : 'proxy';
+    return null;
+  }
+  function leadOf(m) { return m.lead || m.who[0]; }
+  /* Phone versions exist for everyone. Website versions exist only for the office roles (roles with web: true), on the screens
+     they act on: m.web applies to every such role in m.who, m.webViews to a named role. */
+  function webCapable(r) { return !!(roleById[r] && roleById[r].web); }
+  function picturesFor(m, r, inv) {
+    if (inv === 'oversee') return { phone: m.adminImg, web: m.adminWeb || null };
+    var shown = inv === 'proxy' ? leadOf(m) : r;
+    var phone = (m.views && m.views[shown]) || m.img, web = null;
+    if (inv !== 'proxy' && webCapable(r)) web = (m.webViews && m.webViews[r]) || ((m.web && m.who.indexOf(r) >= 0) ? m.web : null);
+    return { phone: phone, web: web };
+  }
+  function nextTask(r, from) {
+    for (var j = from; j < M.length; j++) if (strict(M[j], r)) return j;
+    return -1;
+  }
+  function hadTask(r, before) {
+    for (var j = 0; j < before; j++) if (strict(M[j], r) === 'turn') return true;
+    return false;
+  }
+
+  /* ---------- progress bar ---------- */
+  function buildBar() {
+    var bar = $('bar'); bar.innerHTML = '';
+    M.forEach(function (m, i) {
+      var first = firstOfStep[m.step] === i;
+      var b = document.createElement('button');
+      b.className = 'pt ' + (first ? 'node' : 'dot'); b.type = 'button';
+      b.setAttribute('aria-label', (first ? 'Step ' + stepById[m.step].n + ': ' + stepById[m.step].title + ' — ' : '') + m.title);
+      b.title = m.title;
+      b.dataset.i = i;
+      if (first) {
+        var num = document.createElement('span'); num.className = 'nodenum'; num.textContent = stepById[m.step].n; b.appendChild(num);
+        var lab = document.createElement('span'); lab.className = 'lab ' + (stepById[m.step].n % 2 ? 'up' : 'down'); lab.textContent = stepById[m.step].title; b.appendChild(lab);
+      }
+      b.addEventListener('click', function () { go(i); });
+      bar.appendChild(b);
+    });
+  }
+  function paintBar() {
+    var pts = $('bar').children;
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i], m = M[i];
+      p.classList.toggle('done', i < cur);
+      p.classList.toggle('cur', i === cur);
+      p.classList.toggle('mine', !auto && strict(m, role) === 'turn');
+    }
+    var c = pts[cur]; if (c && c.scrollIntoView) { try { c.scrollIntoView({ inline: 'center', block: 'nearest' }); } catch (e) {} }
+  }
+
+  /* ---------- the stage ---------- */
+  function placeholder(m, id, web) {
+    var d = document.createElement('div');
+    d.className = 'ph ' + (web ? 'web' : 'phone');
+    d.innerHTML = '<div class="big"></div><div>Image not saved yet</div><code></code><small></small>';
+    d.querySelector('.big').textContent = m.title;
+    d.querySelector('code').textContent = 'screens/' + id + '.png';
+    d.querySelector('small').textContent = 'Save the picture with this name and reload the page.';
+    return d;
+  }
+  function shot(m, id, web) {
+    var holder = document.createElement('div'); holder.style.display = 'contents';
+    var img = new Image(); img.className = 'shot' + (web ? ' web' : ''); img.alt = m.title + (web ? ' (website)' : ' (phone)');
+    var tried = found[id] === 'jpg' ? 1 : 0, exts = ['png', 'jpg'];
+    var framed = $('frames').checked, wrap = document.createElement('div');
+    wrap.className = framed ? (web ? 'browser' : 'bezel') : 'bare';
+    if (framed && web) wrap.innerHTML = '<div class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">aks-seafood.app</span></div>';
+    img.onerror = function () {
+      tried++;
+      if (tried < exts.length) { img.src = 'screens/' + id + '.' + exts[tried]; return; }
+      found[id] = false;
+      holder.innerHTML = ''; holder.appendChild(placeholder(m, id, web)); updateCount();
+    };
+    img.onload = function () { found[id] = exts[tried]; updateCount(); };
+    img.src = 'screens/' + id + '.' + exts[tried];
+    wrap.appendChild(img); holder.appendChild(wrap);
+    return holder;
+  }
+  function dashboard(m, r, idx) {
+    var role_ = roleById[r], nxt = nextTask(r, idx);
+    var st = stepById[m.step], d = document.createElement('div'); d.className = 'dash';
+    var state, stateText, line;
+    if (nxt >= 0) { state = 'wait'; stateText = 'Waiting'; }
+    else if (hadTask(r, idx)) { state = 'done'; stateText = 'Done for today'; }
+    else { state = 'done'; stateText = 'Nothing today'; }
+    line = (D.context[m.step] && D.context[m.step][r]) || 'Nothing for you in this step.';
+    var nextText = nxt >= 0 ? 'Step ' + stepById[M[nxt].step].n + ' · ' + stepById[M[nxt].step].title + ' — ' + M[nxt].title : 'No more tasks for you in this day.';
+    d.innerHTML = '<div class="dh"></div><div class="dm"><div class="hi"></div><div class="rl"></div></div>' +
+      '<span class="state ' + state + '">' + stateText + '</span><p class="line"></p>' +
+      '<div class="tiles"><div><b>The day is at</b><span class="t1"></span></div><div><b>Happening now</b><span class="t2"></span></div><div><b>Your next task</b><span class="t3"></span></div></div>';
+    d.querySelector('.dh').textContent = D.brand.toUpperCase();
+    d.querySelector('.hi').textContent = 'Hi ' + role_.name;
+    d.querySelector('.rl').textContent = role_.label;
+    d.querySelector('.line').textContent = line;
+    d.querySelector('.t1').textContent = 'Step ' + st.n + ' · ' + st.title;
+    d.querySelector('.t2').textContent = m.title;
+    d.querySelector('.t3').textContent = nextText;
+    return { node: d, stateClass: state, stateText: stateText };
+  }
+
+  /* The Phone / Website switch is only for the office roles. Where this screen has no website version it stays on Phone. */
+  function setToggle(capable, hasWeb, showingWeb) {
+    var t = $('devtoggle'); t.hidden = !capable;
+    $('devphone').setAttribute('aria-pressed', String(!showingWeb));
+    $('devweb').setAttribute('aria-pressed', String(showingWeb));
+    $('devweb').disabled = !hasWeb;
+    $('devweb').title = hasWeb ? '' : 'This screen only has a phone version';
+  }
+
+  function render() {
+    var m = M[cur];
+    if (auto) role = leadOf(m);
+    var r = role, rr = roleById[r], st = stepById[m.step];
+    sel.value = auto ? 'auto' : r;
+    $('now').textContent = auto ? 'Following the workflow \u2014 now ' + rr.label : '';
+    document.documentElement.style.setProperty('--accent', rr.color);
+    document.documentElement.style.setProperty('--bg', rr.bg);
+    $('brand').textContent = D.brand.toUpperCase();
+    $('hi').textContent = 'Hi ' + rr.name;
+    $('stepname').textContent = 'Step ' + st.n + ' of ' + S.length + ' · ' + st.title;
+    $('count').textContent = 'Moment ' + (cur + 1) + ' of ' + M.length;
+    $('title').textContent = m.title;
+    $('story').textContent = m.story;
+
+    var inv = involvement(m, r), frame = $('frame'), stateEl = $('state'), hint = $('hint');
+    frame.innerHTML = '';
+    var proxy = $('proxy'); proxy.hidden = true;
+    if (inv) {
+      var lead = roleById[leadOf(m)];
+      if (inv === 'oversee') {
+        proxy.hidden = false;
+        proxy.textContent = 'Admin view: what ' + lead.name + ' (' + lead.label + ') has recorded so far, with Edit where it makes sense. You can also do the task yourself.';
+      } else if (inv === 'proxy') {
+        proxy.hidden = false;
+        proxy.textContent = lead.name + ' (' + lead.label + ') normally does this. As Admin you can do it yourself, so you see their screen.';
+      }
+      var pics = picturesFor(m, r, inv), phoneId = pics.phone, webId = pics.web;
+      var useWeb = webCapable(r) && device === 'web' && !!webId;
+      frame.appendChild(shot(m, useWeb ? webId : phoneId, useWeb));
+      setToggle(webCapable(r), !!webId, useWeb);
+      stateEl.className = 'state ' + (inv === 'turn' ? 'turn' : (inv === 'oversee' || inv === 'proxy' ? 'admin' : 'fyi'));
+      stateEl.textContent = inv === 'turn' ? 'Your turn' : (inv === 'oversee' ? 'Admin view \u00b7 you can edit' : (inv === 'proxy' ? 'Admin can do this too' : 'Heads-up for you'));
+      hint.innerHTML = cur < M.length - 1 ? 'Click the screen to <b>continue</b>' : 'That is the end of the day. Click to <b>start again</b>';
+    } else {
+      var d = dashboard(m, r, cur);
+      setToggle(false, false, false);
+      frame.appendChild(d.node);
+      stateEl.className = 'state ' + d.stateClass; stateEl.textContent = d.stateText;
+      hint.innerHTML = 'Nothing for ' + rr.name + ' to do right now. Click to <b>continue</b>, or switch user to see who is working';
+    }
+    var nxt = nextTask(r, inv ? cur + 1 : cur);
+    $('next').textContent = nxt >= 0 ? 'Next for ' + rr.name + ': step ' + stepById[M[nxt].step].n + ' · ' + M[nxt].title : (inv ? 'That was the last task for ' + rr.name + ' today.' : 'No more tasks for ' + rr.name + ' today.');
+    var asks = $('asks'); asks.innerHTML = '';
+    (m.asks.length ? m.asks : ['Nothing special — does this look right?']).forEach(function (a) { var li = document.createElement('li'); li.textContent = a; asks.appendChild(li); });
+    $('comment').value = (store(true) || {})[m.id] || '';
+    $('prev').disabled = cur === 0;
+    $('nextbtn').textContent = cur === M.length - 1 ? 'Start again' : 'Next ▶';
+    paintBar();
+    try { history.replaceState(null, '', '#' + m.id + ((auto && device === 'web') ? '' : '/' + (auto ? 'auto' : r) + (device === 'web' ? '' : '/' + device))); } catch (e) {}
+  }
+
+  function go(i) { cur = Math.max(0, Math.min(M.length - 1, i)); render(); }
+  function next() { go(cur === M.length - 1 ? 0 : cur + 1); }
+
+  /* ---------- comments ---------- */
+  $('comment').addEventListener('input', function () {
+    var all = store(true) || {}; all[M[cur].id] = $('comment').value; store(false, all);
+  });
+  $('export').addEventListener('click', function () {
+    var all = store(true) || {}, out = '# Comments on the AKS Seafood walkthrough\n\n';
+    var any = false;
+    M.forEach(function (m) { if (all[m.id] && all[m.id].trim()) { any = true; out += '## ' + m.id + ' — ' + m.title + '\n' + all[m.id].trim() + '\n\n'; } });
+    if (!any) out += '(no comments yet)\n';
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([out], { type: 'text/markdown' }));
+    a.download = 'aks-walkthrough-comments.md'; document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  /* ---------- image checklist (which pictures are saved) ---------- */
+  var ids = [];
+  M.forEach(function (m) {
+    var all = [m.img, m.web, m.adminImg, m.adminWeb];
+    [m.views, m.webViews].forEach(function (v) { if (v) Object.keys(v).forEach(function (k) { all.push(v[k]); }); });
+    all.forEach(function (x) { if (x && ids.indexOf(x) < 0) ids.push(x); });
+  });
+  function updateCount() {
+    var n = 0, k = 0; ids.forEach(function (id) { if (found[id]) n++; if (found[id] !== undefined) k++; });
+    $('imgcount').textContent = k < ids.length ? 'Checking pictures… (' + n + ' found so far)' : n + ' of ' + ids.length + ' pictures found in screens/';
+    var box = $('missing'); box.innerHTML = '';
+    ids.forEach(function (id) { var d = document.createElement('div'); d.className = found[id] ? 'ok' : (found[id] === undefined ? '' : 'no'); d.textContent = (found[id] ? '✓ ' : (found[id] === undefined ? '… ' : '✗ ')) + id; box.appendChild(d); });
+  }
+  function probe(id) {
+    var png = new Image();
+    png.onload = function () { found[id] = 'png'; updateCount(); };
+    png.onerror = function () {
+      var jpg = new Image();
+      jpg.onload = function () { found[id] = 'jpg'; updateCount(); };
+      jpg.onerror = function () { found[id] = false; updateCount(); };
+      jpg.src = 'screens/' + id + '.jpg';
+    };
+    png.src = 'screens/' + id + '.png';
+  }
+  $('toggle').addEventListener('click', function () {
+    var b = $('missing'); b.hidden = !b.hidden; $('toggle').textContent = b.hidden ? 'Show the list of images' : 'Hide the list of images';
+  });
+
+  /* ---------- wiring ---------- */
+  var sel = $('role');
+  var oa = document.createElement('option'); oa.value = 'auto'; oa.textContent = 'Follow the workflow (automatic)'; sel.appendChild(oa);
+  R.forEach(function (r) { var o = document.createElement('option'); o.value = r.id; o.textContent = r.label + ' — ' + r.name; sel.appendChild(o); });
+  sel.addEventListener('change', function () {
+    if (sel.value === 'auto') auto = true; else { auto = false; role = sel.value; }
+    render();
+  });
+  try { if (localStorage.getItem('aks-frames') === '0') $('frames').checked = false; } catch (e) {}
+  $('frames').addEventListener('change', function () { try { localStorage.setItem('aks-frames', $('frames').checked ? '1' : '0'); } catch (e) {} render(); });
+  $('devphone').addEventListener('click', function () { device = 'phone'; render(); });
+  $('devweb').addEventListener('click', function () { device = 'web'; render(); });
+  $('frame').addEventListener('click', next);      // clicking the screen (picture, placeholder or dashboard card) goes on
+  $('prev').addEventListener('click', function () { go(cur - 1); });
+  $('nextbtn').addEventListener('click', next);
+  document.addEventListener('keydown', function (e) {
+    if (e.target && (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) return;
+    if (e.key === 'ArrowRight') next(); else if (e.key === 'ArrowLeft') go(cur - 1);
+  });
+
+  function readHash() {            // #m05/sales/phone = moment m05 as the Sales team, phone version (so a position can be shared as a link)
+    var h = (location.hash || '').replace('#', '').split('/');
+    if (h[0]) { for (var i = 0; i < M.length; i++) if (M[i].id === h[0]) cur = i; }
+    if (h[1] && roleById[h[1]]) { role = h[1]; auto = false; } else { auto = true; }
+    device = h[2] === 'phone' ? 'phone' : 'web';
+  }
+  window.addEventListener('hashchange', function () { readHash(); render(); });
+  readHash();
+  buildBar(); ids.forEach(probe); updateCount(); render();
+})();
+</script>
+</body>
+</html>
