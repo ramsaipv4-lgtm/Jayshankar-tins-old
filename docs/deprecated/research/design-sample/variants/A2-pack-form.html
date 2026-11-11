@@ -1,0 +1,287 @@
+<!doctype html>
+<!--
+Direction A · Pack container form · sortly-notion, light, content-first.
+The complex component exercise: container_fill picker (custom dropdown), line-item
+table (per-bill lines), container number + capacity fields, submit. Custom picker,
+no native <select>.
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Direction A · Pack container form · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg-0:#f6f5f4;
+  --bg-1:#ffffff;
+  --bg-2:#ffffff;
+  --bg-3:#faf9f7;
+  --text-0:#37352f;
+  --text-1:#615d59;
+  --text-2:#a39e98;
+  --accent:#4f46e5;
+  --accent-hover:#4338ca;
+  --border-0:#e8e6e1;
+  --border-1:#f0eee9;
+  --success:#108c3d;
+  --shadow-1:0 1px 2px rgba(15,23,42,.04);
+  --shadow-2:0 2px 6px rgba(15,23,42,.05),0 4px 14px rgba(15,23,42,.03);
+  --r-xs:4px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-pill:9999px;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg-0); color:var(--text-0); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+body { font-size:16px; line-height:1.5; }
+
+.shell { display:flex; flex-direction:column; min-height:100vh; padding-bottom:env(safe-area-inset-bottom,0px); }
+.topnav { display:flex; align-items:center; gap:14px; padding:14px 20px; background:var(--bg-1); border-bottom:1px solid var(--border-1); position:sticky; top:0; z-index:10; }
+.brand { font-weight:700; font-size:18px; letter-spacing:-0.01em; }
+.brand .accent { color:var(--accent); }
+.backbtn { width:36px; height:36px; border-radius:var(--r-sm); border:1px solid var(--border-0); background:transparent; color:var(--text-1); display:inline-flex; align-items:center; justify-content:center; }
+.spacer { flex:1; }
+
+.page-title { padding:24px 20px 4px; max-width:1280px; margin:0 auto; width:100%; }
+.page-title h1 { font-size:24px; font-weight:700; letter-spacing:-0.01em; margin:0 0 4px; color:var(--text-0); }
+.page-title .sub { font-size:13px; color:var(--text-1); }
+
+main { padding:8px 20px 96px; max-width:1280px; margin:0 auto; width:100%; }
+
+.section { background:var(--bg-1); border:1px solid var(--border-0); border-radius:var(--r-md); padding:20px; margin-bottom:16px; }
+.section h2 { font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-2); margin:0 0 16px; }
+
+.field { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.field label { font-size:13px; font-weight:500; color:var(--text-1); }
+.field .help { font-size:12px; color:var(--text-2); }
+input[type="text"], input[type="number"] {
+  font:inherit; font-size:16px;
+  height:44px; padding:0 14px;
+  border-radius:var(--r-sm); border:1px solid var(--border-0);
+  background:var(--bg-1); color:var(--text-0);
+}
+input[type="text"]:focus, input[type="number"]:focus { outline:2px solid var(--accent); outline-offset:2px; border-color:var(--accent); }
+
+/* Custom picker replacing native <select> */
+.picker {
+  position:relative;
+  display:flex; align-items:center; justify-content:space-between;
+  height:44px; padding:0 14px;
+  border-radius:var(--r-sm); border:1px solid var(--border-0);
+  background:var(--bg-1); color:var(--text-0);
+  font-size:16px; cursor:pointer;
+}
+.picker:focus-within { outline:2px solid var(--accent); outline-offset:2px; border-color:var(--accent); }
+.picker .value { color:var(--text-0); }
+.picker .value.placeholder { color:var(--text-2); }
+.picker .chev { color:var(--text-2); }
+
+/* Lines table — phones get a card, desktops get a table */
+.line-list { display:flex; flex-direction:column; gap:12px; }
+.line-card {
+  background:var(--bg-1);
+  border:1px solid var(--border-0);
+  border-radius:var(--r-sm);
+  padding:14px;
+}
+.line-card .top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.line-card .fish { font-weight:600; color:var(--text-0); font-size:15px; }
+.line-card .vendor { font-size:12px; color:var(--text-2); }
+.line-card .meta { display:flex; gap:14px; margin-top:8px; }
+.line-card .meta > div { flex:1; }
+.line-card .meta-label { font-size:11px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:4px; }
+.line-card .meta-value { font-size:15px; font-weight:600; color:var(--text-0); }
+.line-card .meta-value.dim { color:var(--text-2); font-weight:500; }
+.line-card .kg-input {
+  font:inherit; font-size:16px;
+  height:44px; padding:0 14px;
+  border-radius:var(--r-sm); border:1px solid var(--border-0);
+  background:var(--bg-1); color:var(--text-0); width:100%;
+}
+.line-card .kg-input:focus { outline:2px solid var(--accent); outline-offset:2px; border-color:var(--accent); }
+
+/* Submit row */
+.submit-row { margin-top:24px; padding-top:20px; border-top:1px solid var(--border-1); display:flex; flex-direction:column; gap:12px; align-items:stretch; }
+.submit-row .totals { font-size:13px; color:var(--text-1); text-align:center; }
+.submit-row .totals strong { color:var(--text-0); font-weight:700; }
+button.primary {
+  font:inherit; font-size:16px; font-weight:600;
+  height:48px; border-radius:var(--r-sm); border:0;
+  background:var(--accent); color:#fff; cursor:pointer;
+  letter-spacing:-0.005em;
+}
+button.primary:hover { background:var(--accent-hover); }
+button.secondary {
+  font:inherit; font-size:15px; font-weight:500;
+  height:44px; border-radius:var(--r-sm);
+  background:transparent; color:var(--text-1); border:1px solid var(--border-0); cursor:pointer;
+}
+
+/* Sticky submit on phone */
+@media (max-width:759px) {
+  .submit-row {
+    position:fixed; left:0; right:0; bottom:0;
+    background:var(--bg-1); border-top:1px solid var(--border-0);
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));
+    margin:0;
+    z-index:8;
+  }
+  .submit-row .secondary { display:none; }
+}
+
+/* Tablet/desktop */
+@media (min-width:760px) {
+  .line-card { display:grid; grid-template-columns:1fr 140px 140px; align-items:center; gap:16px; padding:14px 18px; }
+  .line-card .top { grid-column:1 / -1; }
+  .line-card .meta { margin-top:0; }
+  main { padding:8px 32px 96px; }
+  .page-title { padding:32px 32px 4px; }
+  .submit-row { flex-direction:row; align-items:center; justify-content:space-between; }
+  .submit-row button.primary { width:auto; padding:0 32px; }
+}
+@media (min-width:1024px) {
+  main { padding:8px 32px 96px; }
+  .page-title { padding:32px 32px 4px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="topnav">
+    <a href="A1-rep-dashboard.html" class="backbtn" aria-label="Back to rep dashboard">←</a>
+    <div class="brand">Jayshankar<span class="accent">.</span></div>
+    <div class="spacer"></div>
+    <button class="backbtn" aria-label="Sign out">⎋</button>
+  </header>
+
+  <div class="page-title">
+    <h1>Pack a container</h1>
+    <p class="sub">Bill #DEMO-004 · Muthu (Selvam) · 14 Sep, 09:18</p>
+  </div>
+
+  <main>
+
+    <!-- Bill picker -->
+    <div class="section">
+      <h2>Bill</h2>
+      <div class="field">
+        <label for="bill-picker">Pick a bill to pack from</label>
+        <div class="picker" tabindex="0" role="combobox" aria-expanded="false" aria-controls="bill-popover" id="bill-picker">
+          <span class="value">DEMO-004 · 14 Sep · 12 lines · ₹42,300</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </div>
+        <span class="help">Only bills with at least one unpacked line are shown.</span>
+      </div>
+    </div>
+
+    <!-- Lines -->
+    <div class="section">
+      <h2>Fish lines</h2>
+      <div class="line-list">
+
+        <div class="line-card">
+          <div class="top">
+            <div>
+              <div class="fish">Prawns · Large</div>
+              <div class="vendor">Muthu (Selvam)</div>
+            </div>
+            <span style="font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Line 1</span>
+          </div>
+          <div class="meta">
+            <div>
+              <div class="meta-label">Delivered</div>
+              <div class="meta-value">12.0 kg</div>
+            </div>
+            <div>
+              <div class="meta-label">Available</div>
+              <div class="meta-value">10.5 kg</div>
+            </div>
+          </div>
+          <div>
+            <label class="help" for="kg-1" style="display:block;margin-bottom:6px;">Pack kg</label>
+            <input id="kg-1" class="kg-input" type="number" min="0" max="10.5" step="0.1" value="8.0" inputmode="decimal" />
+          </div>
+        </div>
+
+        <div class="line-card">
+          <div class="top">
+            <div>
+              <div class="fish">Pomfret · Medium</div>
+              <div class="vendor">Muthu (Selvam)</div>
+            </div>
+            <span style="font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Line 2</span>
+          </div>
+          <div class="meta">
+            <div>
+              <div class="meta-label">Delivered</div>
+              <div class="meta-value">8.0 kg</div>
+            </div>
+            <div>
+              <div class="meta-label">Available</div>
+              <div class="meta-value">8.0 kg</div>
+            </div>
+          </div>
+          <div>
+            <label class="help" for="kg-2" style="display:block;margin-bottom:6px;">Pack kg</label>
+            <input id="kg-2" class="kg-input" type="number" min="0" max="8.0" step="0.1" value="0" inputmode="decimal" />
+          </div>
+        </div>
+
+        <div class="line-card">
+          <div class="top">
+            <div>
+              <div class="fish">Squid · Medium</div>
+              <div class="vendor">Muthu (Selvam)</div>
+            </div>
+            <span style="font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Line 3</span>
+          </div>
+          <div class="meta">
+            <div>
+              <div class="meta-label">Delivered</div>
+              <div class="meta-value">6.0 kg</div>
+            </div>
+            <div>
+              <div class="meta-label">Available</div>
+              <div class="meta-value">6.0 kg</div>
+            </div>
+          </div>
+          <div>
+            <label class="help" for="kg-3" style="display:block;margin-bottom:6px;">Pack kg</label>
+            <input id="kg-3" class="kg-input" type="number" min="0" max="6.0" step="0.1" value="0" inputmode="decimal" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Container details -->
+    <div class="section">
+      <h2>Container</h2>
+      <div class="field">
+        <label for="container-number">Container number</label>
+        <input id="container-number" type="text" value="TC-DEMO-01" />
+        <span class="help">A new number registers the box; an existing number reuses it.</span>
+      </div>
+      <div class="field">
+        <label for="container-capacity">Capacity (kg)</label>
+        <div class="picker" tabindex="0" role="combobox" aria-expanded="false" aria-controls="cap-popover">
+          <span class="value">10 kg</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit (sticky on phone, inline on desktop) -->
+    <div class="submit-row">
+      <div class="totals">Total packed: <strong>8.0</strong> / 10 kg capacity</div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <button class="secondary">Save draft</button>
+        <button class="primary">Pack container</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+</body>
+</html>

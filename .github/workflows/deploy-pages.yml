@@ -1,0 +1,86 @@
+# Deploy the picture book to GitHub Pages — the deck on its own, no app, no secrets.
+#
+# This publishes ONLY the workflow storybook (`npm run build:storybook` -> dist-storybook/): 32
+# chapters of static data. There is no Supabase in that bundle, so no environment variables and no
+# repository secrets are needed — which is what makes it the easiest thing in this project to ship.
+#
+# ONE-TIME SETUP (3 min):
+#   1. Push this repo to GitHub (there is currently no remote).
+#   2. Settings -> Pages -> Source = "GitHub Actions".
+#   3. Open the URL it prints, and send it to the client.
+#
+# Repo visibility: Pages does not serve a PRIVATE repo on the free plan — it needs the repo public,
+# or GitHub Pro/Team. The deck holds no client data (every figure is a sample) and no secrets, but
+# the repo also contains the app source. See docs/DEPLOY-GITHUB-PAGES.md §1 before deciding.
+#
+# NOTE: Pages hosts ONE site per repo. This workflow publishes the deck; if you later want the full
+# app at this URL too, replace this build with `npm run build` + `path: dist` and wire the two
+# Supabase secrets (see docs/DEPLOY-NETLIFY.md for the variable names).
+
+name: Deploy storybook to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/lib/storybook/**'
+      - 'src/components/storybook/**'
+      - 'src/pages/Storybook*.tsx'
+      - 'src/storybook-main.tsx'
+      - 'storybook.html'
+      - 'storybook-public/**'
+      - 'src/index.css'
+      - 'tailwind.config.ts'
+      - 'vite.storybook.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build the deck
+        env:
+          # A Pages *project* site is served from /<repo>/. A <owner>.github.io repo or a custom
+          # domain serves from the root — set a repository variable PAGES_BASE = "/" for those.
+          # Wrong value here = white page: index.html would ask for /assets/… which does not exist
+          # under the subpath.
+          VITE_BASE: ${{ vars.PAGES_BASE || format('/{0}/', github.event.repository.name) }}
+        run: npm run build:storybook
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-storybook
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,3 @@
+# Drop consumer kit-staging-export bundles here as `<project-name>/` subdirectories.
+# The kit-growth session runs `node scripts/kit-ingest.mjs` to scan this directory.
+# See `kit-staging/README.md` for the workflow.

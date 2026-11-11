@@ -1,0 +1,81 @@
+/* Storybook, Ant variant — the stylesheet for the second review deck.
+ *
+ * WHY THIS IS NOT index.css: that file starts with `@tailwind base`, i.e. Tailwind's preflight.
+ * antd ships its own reset, and two resets on one document is the classic way to get half-styled
+ * Ant controls (buttons losing their background, inputs losing their border). So this deck loads
+ * Tailwind WITHOUT preflight (see tailwind.storybook-ant.config.ts), for layout, and lets antd own base
+ * styling. Tailwind's `--tw-*` variable defaults are still loaded — see the comment above `@config`.
+ *
+ * The motion guard is duplicated on purpose: tailwind.config.ts declares the animate-sb-* keyframes
+ * and both decks use them, so both stylesheets have to honour prefers-reduced-motion.
+ */
+/* `@tailwind base` is REQUIRED even though preflight is off: it emits the `--tw-*` variable defaults
+   that translate/scale/rotate/shadow/ring utilities read. Leaving it out made every transform compute
+   to `none` (the phone frame sat half a frame off-centre). Preflight itself is disabled in
+   tailwind.storybook-ant.config.ts so antd's reset is still the only reset on the page. */
+@config "../tailwind.storybook-ant.config.ts";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* The deck's motion lives in tailwind.config.ts (animate-sb-*); antd supplies no motion of its own
+   here. `reduce` collapses every animation to a single frame rather than shortening it. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-sb-page,
+  .animate-sb-rise,
+  .animate-sb-pop,
+  .animate-sb-draw,
+  .animate-sb-grow,
+  .animate-sb-grow-x,
+  .animate-sb-arrow,
+  .animate-sb-sheen {
+    animation: none !important;
+  }
+}
+
+/* Ant blue focus ring (index.css uses the app's indigo). */
+*:focus-visible {
+  outline: 2px solid #1677ff;
+  outline-offset: 2px;
+}
+
+/* Step-change entrance for the Ant workbench's stage and caption (src/components/storybook-ant/deck).
+   Short and shallow on purpose — it marks "a new screen arrived", it does not perform. */
+@keyframes sba-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.sba-enter {
+  animation: sba-enter 260ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sba-enter {
+    animation: none;
+  }
+}
+
+/* ---- Ant mock-ups (src/components/storybook-ant/mock) --------------------------------------------- */
+.sba-noscroll { scrollbar-width: none; }
+.sba-noscroll::-webkit-scrollbar { display: none; }
+
+@keyframes sba-rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.sba-rise { animation: sba-rise 320ms ease-out both; }
+
+@keyframes sba-fade { from { opacity: 0; } to { opacity: 1; } }
+.sba-fade { animation: sba-fade 600ms ease-out 200ms both; }
+
+@keyframes sba-draw { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
+.sba-draw { animation: sba-draw 900ms ease-out 100ms both; }
+
+@keyframes sba-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.sba-grow { animation: sba-grow 520ms cubic-bezier(.2,.8,.2,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sba-rise, .sba-fade, .sba-draw, .sba-grow { animation: none; }
+}

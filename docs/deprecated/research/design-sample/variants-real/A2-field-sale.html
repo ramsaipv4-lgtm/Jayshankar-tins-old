@@ -1,0 +1,218 @@
+<!doctype html>
+<!--
+Direction A · Surface 2 (phone) · FIELD SALE ENTRY.
+Design call: Rep is at a buyer's desk. 3 fields, submit, done. No picker for SKU — rep
+types fish name or scans QR. Voice-friendly. Offline-tolerant (outbox state visible).
+Same Demo Warehouse data as the seed script.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>A · Field sale · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg:#f4f5f3;
+  --card:#ffffff;
+  --border:1px solid #e8e6e1;
+  --ink-0:#1a1916;
+  --ink-1:#54524b;
+  --ink-2:#8c8a83;
+  --accent:#0f7a4f;
+  --accent-soft:#dcecdc;
+  --mono:ui-monospace,monospace;
+  font-family:Inter,system-ui,sans-serif;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg); color:var(--ink-0); height:100%; }
+body { font-size:17px; line-height:1.4; -webkit-font-smoothing:antialiased; }
+
+/* Two columns at desktop, full-screen single-task at phone. The phone is the operative
+   viewport here. */
+.scene {
+  padding:max(env(safe-area-inset-top,0px),12px) 12px 0;
+  min-height:100vh; display:flex; flex-direction:column;
+}
+
+.context {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:6px 0 16px;
+}
+.context .where { font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:1.2px; font-weight:600; }
+.context .signal { font-size:12px; color:var(--accent); display:flex; align-items:center; gap:6px; font-weight:600; }
+.context .signal .sig-bar { width:10px; height:10px; border-radius:50%; background:var(--accent); }
+
+h1 { font-size:26px; font-weight:700; letter-spacing:-0.02em; margin:0 0 6px; line-height:1.1; }
+.sub { font-size:14px; color:var(--ink-1); margin:0 0 22px; }
+
+/* Card that holds the three fields. Single card, single screen. */
+.form { background:var(--card); border:var(--border); border-radius:18px; padding:18px; }
+
+.field { margin-bottom:18px; }
+.field label { display:flex; align-items:center; justify-content:space-between; }
+.field label .key { font-size:13px; font-weight:700; color:var(--ink-0); text-transform:uppercase; letter-spacing:1.2px; }
+.field label .scan-link {
+  font-size:13px; font-weight:600; color:var(--accent); cursor:pointer;
+  background:none; border:0; padding:0; font:inherit;
+}
+
+/* Big inputs — 56px tall, designed for thumb typing without precision */
+input[type="text"], input[type="number"] {
+  font:inherit; font-size:22px; font-weight:600; letter-spacing:-0.01em;
+  width:100%; margin-top:8px; padding:14px 14px;
+  border:2px solid var(--border); border-radius:12px;
+  background:#fff; color:var(--ink-0); text-align:left;
+  min-height:56px;
+}
+input[type="text"]:focus, input[type="number"]:focus {
+  border-color:var(--accent); outline:3px solid var(--accent-soft); outline-offset:0;
+}
+input.as-qty { font-size:32px; letter-spacing:-0.02em; }
+input.as-price { font-family:var(--mono); text-align:right; }
+
+/* The customer picker is the one that *should* be a picker (the small list of known buyers).
+   Voice/text for everything else. */
+.chip-row {
+  display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;
+}
+.chip {
+  font:inherit; font-size:15px; font-weight:500;
+  padding:8px 14px; border-radius:9999px;
+  background:#fff; color:var(--ink-0); border:2px solid var(--border); cursor:pointer;
+}
+.chip.selected { background:var(--ink-0); color:#fff; border-color:var(--ink-0); }
+.chip .ph { font-size:13px; color:var(--ink-2); margin-left:6px; }
+
+/* Total line — updates live as rep types kg + price. Single computation, always visible. */
+.total-bar {
+  background:var(--ink-0); color:#fff; border-radius:14px;
+  padding:14px 18px; margin:8px 0 16px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.total-bar .l { font-size:12px; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:1.4px; font-weight:700; }
+.total-bar .v { font-size:24px; font-weight:700; letter-spacing:-0.01em; font-family:var(--mono); }
+
+/* Submit: full-bleed bottom CTA */
+.submit {
+  margin-top:auto; padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px));
+}
+.submit button {
+  width:100%; padding:22px 0; border-radius:14px; border:0;
+  background:var(--accent); color:#fff; font:inherit; font-size:20px; font-weight:700;
+  letter-spacing:-0.01em; cursor:pointer;
+}
+.submit button:active { transform:scale(0.98); }
+.submit button:disabled { background:var(--ink-2); cursor:not-allowed; }
+.submit .off { background:var(--ink-2); }
+
+/* Outbox feedback — offline-pending state. D30. */
+.outbox {
+  background:#fff7c2; border:1px solid #f0d878; color:#6b5300;
+  border-radius:12px; padding:10px 14px; margin-bottom:14px;
+  font-size:13px; line-height:1.4; display:flex; gap:10px; align-items:center;
+}
+.outbox .dot { width:8px; height:8px; border-radius:50%; background:#c89a1c; flex-shrink:0; }
+
+/* After submit success — empty state */
+.success {
+  background:var(--card); border:var(--border); border-radius:18px;
+  padding:36px 24px; text-align:center;
+}
+.success h2 { font-size:22px; margin:0 0 8px; color:var(--accent); letter-spacing:-0.01em; }
+.success p { margin:0 0 14px; color:var(--ink-1); }
+.success .receipt { font-size:14px; color:var(--ink-2); font-family:var(--mono); }
+
+</style>
+</head>
+<body>
+<div class="scene">
+
+  <div class="context">
+    <div class="where">📍 At Saravana Stores · Royapuram</div>
+    <div class="signal"><span class="sig-bar"></span> 4G · good</div>
+  </div>
+
+  <h1>Record a sale</h1>
+  <p class="sub">Fish, kg, price — three fields. Buyer is who you are with.</p>
+
+  <div class="form">
+
+    <!-- FIELD 1: Fish (typed or scanned or spoken) -->
+    <div class="field">
+      <label>
+        <span class="key">Fish</span>
+        <button class="scan-link" type="button">⊟ Scan QR</button>
+      </label>
+      <input type="text" id="fish" value="Pomfret" placeholder="e.g. Pomfret, Mackerel, Prawns large" autocomplete="off" />
+    </div>
+
+    <!-- FIELD 2: kg — the BIG one -->
+    <div class="field">
+      <label>
+        <span class="key">kg (live)</span>
+        <span style="font-size:13px;color:var(--ink-2);font-family:var(--mono);">12kg remaining · TC-DEMO-01</span>
+      </label>
+      <input type="number" class="as-qty" id="kg" inputmode="decimal" step="0.1" min="0" max="12" value="3.5" />
+    </div>
+
+    <!-- FIELD 3: price — free-text typed (D31: never broadcast) -->
+    <div class="field">
+      <label>
+        <span class="key">₹ per kg (your quote)</span>
+        <span style="font-size:13px;color:var(--ink-2);">last 5 sales: ₹380 · ₹380 · ₹400 · ₹360 · ₹380</span>
+      </label>
+      <input type="number" class="as-price" id="price" inputmode="decimal" step="1" min="0" value="380" />
+    </div>
+
+    <!-- Buyer: chip selector — small set, picker OK -->
+    <div class="field">
+      <label>
+        <span class="key">Buyer</span>
+        <button class="scan-link" type="button">+ New</button>
+      </label>
+      <div class="chip-row">
+        <button class="chip selected">Saravana Stores <span class="ph">credit · ₹896 due</span></button>
+        <button class="chip">Green Leaf <span class="ph">cash · over limit</span></button>
+        <button class="chip">Anand</button>
+        <button class="chip">Walk-in</button>
+      </div>
+    </div>
+
+    <div class="total-bar">
+      <div class="l">Total (auto)</div>
+      <div class="v" id="total">₹1,330.00</div>
+    </div>
+  </div>
+
+  <!-- Voice outbox: rep is talking, recording dictation, sale enters outbox -->
+  <div class="outbox">
+    <span class="dot"></span>
+    <span>🎙 Voice mode on · last 3 fields came from speech · preview above before submit</span>
+  </div>
+
+  <div class="submit">
+    <button type="button" aria-label="Submit sale">✓ Record ₹1,330 · Saravana</button>
+  </div>
+
+</div>
+<script>
+  // Live total — kg × price. Real numbers from the seed showcase.
+  const kg    = document.getElementById('kg');
+  const price = document.getElementById('price');
+  const total = document.getElementById('total');
+  const submit = document.querySelector('.submit button');
+  function recalc() {
+    const k = Number(kg.value || 0);
+    const p = Number(price.value || 0);
+    const t = k * p;
+    total.textContent = '₹' + t.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    submit.textContent = `✓ Record ₹${t.toLocaleString('en-IN', { minimumFractionDigits: 0 })} · Saravana`;
+  }
+  kg.addEventListener('input', recalc);
+  price.addEventListener('input', recalc);
+</script>
+</body>
+</html>

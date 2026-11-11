@@ -1,0 +1,402 @@
+/* Focus — all styling lives here (SPEC.md §4.1).
+   Palette and rhythm are SPEC.md §5; focus and contrast rules are §6.
+   Row markup inside #todo-list is produced at runtime by src/ui.js, so the
+   rules for it are written against what §8.6 guarantees (a checkbox and a
+   delete control per row) rather than against class names this file cannot
+   see. */
+
+/* ---------------------------------------------------------------- tokens */
+
+:root {
+  color-scheme: light;
+
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --bg: #ffffff;
+
+  /* Neutrals for borders and inset panels, same grey family as --muted. */
+  --line: #e5e7eb;
+  --surface: #f9fafb;
+
+  /* 8px spacing rhythm. */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+
+  --radius: 8px;
+  --focus-width: 3px;
+  --focus-offset: 2px;
+
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif;
+}
+
+/* ------------------------------------------------------------- base/reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Must outrank the layout rules below, which would otherwise re-show an
+   element that ui.js hid with the hidden attribute. */
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: var(--space-3) var(--space-2) var(--space-4);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  overflow-wrap: break-word;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+/* ------------------------------------------------------------------ focus */
+
+/* SPEC.md §6: focus visible at all times, at least a 2px indicator. The ring
+   is on :focus rather than :focus-visible on purpose — "at all times" is
+   literal, and a pointer user who then reaches for the keyboard should not
+   have to tab away and back to find out where they are. */
+:focus {
+  outline: var(--focus-width) solid var(--accent);
+  outline-offset: var(--focus-offset);
+}
+
+/* ---------------------------------------------------------------- utility */
+
+.visually-hidden,
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ----------------------------------------------------------------- layout */
+
+.app {
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+.app__header {
+  margin-bottom: var(--space-3);
+}
+
+.app__title {
+  margin: 0;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.app__tagline {
+  margin: var(--space-1) 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.app__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ----------------------------------------------------------------- notice */
+
+.notice,
+#storage-notice {
+  margin: 0 0 var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+/* --------------------------------------------------------------- controls */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font: inherit;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background: var(--accent-strong);
+}
+
+.btn--quiet {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--accent);
+}
+
+.btn--quiet:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+.btn[disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------- add form */
+
+.new-todo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0 0 var(--space-2);
+}
+
+.new-todo__input,
+#new-todo-input {
+  flex: 1 1 12rem;
+  min-width: 0;
+  min-height: 40px;
+  padding: var(--space-1) 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+#new-todo-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+#new-todo-input:hover {
+  border-color: var(--muted);
+}
+
+/* --------------------------------------------------------- toolbar/filters */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.toolbar__count {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+#filters > button {
+  min-height: 32px;
+  padding: 4px var(--space-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+#filters > button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* SPEC.md §2.4: the active filter is visually distinct. ui.js owns which one
+   is marked, so every conventional marking is accepted here. */
+#filters > button[aria-pressed="true"],
+#filters > button[aria-current]:not([aria-current="false"]),
+#filters > button.active,
+#filters > button.is-active,
+#filters > button.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* ------------------------------------------------------------------- list */
+
+#todo-list {
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+#todo-list:empty {
+  border-top: 0;
+}
+
+/* One row. Written as "> *" because ui.js chooses the element. */
+#todo-list > * {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+#todo-list > * > * {
+  min-width: 0;
+}
+
+/* The text carrier, whatever ui.js wrapped it in, takes the free space so the
+   delete control sits at the end of the row. */
+#todo-list > * > label,
+#todo-list > * > span,
+#todo-list > * > p,
+#todo-list > * > div {
+  flex: 1 1 auto;
+}
+
+#todo-list > * > label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  cursor: pointer;
+}
+
+#todo-list input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+#todo-list button {
+  flex: 0 0 auto;
+  min-width: 32px;
+  min-height: 32px;
+  margin-left: auto;
+  padding: 4px var(--space-1);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#todo-list button:hover {
+  border-color: var(--line);
+  color: var(--accent);
+}
+
+/* SPEC.md §5: done todos are muted and struck through. The checked-checkbox
+   selector is the one thing guaranteed by §8.6; the class and data-attribute
+   forms are there in case ui.js also marks the row. */
+#todo-list > :is(
+  *:has(input[type="checkbox"]:checked),
+  [data-done="true"],
+  .done,
+  .is-done,
+  .completed
+) {
+  color: var(--muted);
+}
+
+/* The strike goes on the row's text-carrying descendants, not on the row
+   itself. text-decoration propagates to in-flow descendants and cannot be
+   switched off further down, so striking the row would draw the line straight
+   through the delete control's label. Anything that is — or contains — a
+   button is excluded; a checkbox is a replaced box and is never painted on. */
+#todo-list > :is(
+  *:has(input[type="checkbox"]:checked),
+  [data-done="true"],
+  .done,
+  .is-done,
+  .completed
+) :not(button, input, select, textarea, :has(button)) {
+  text-decoration-line: line-through;
+  text-decoration-color: var(--muted);
+  text-decoration-thickness: 1px;
+}
+
+/* ------------------------------------------------------------ empty state */
+
+#empty-state {
+  margin: 0 0 var(--space-2);
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.9375rem;
+}
+
+/* -------------------------------------------------------------- narrow UI */
+
+/* 320px is the worst device that must work (SPEC.md §1, §8.8). */
+@media (max-width: 24rem) {
+  body {
+    padding: var(--space-2) var(--space-2) var(--space-3);
+  }
+
+  .toolbar {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn,
+  #filters > button,
+  #todo-list button,
+  #new-todo-input {
+    transition: background-color 120ms ease, border-color 120ms ease,
+      color 120ms ease;
+  }
+}

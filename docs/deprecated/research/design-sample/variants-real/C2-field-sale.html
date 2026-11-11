@@ -1,0 +1,195 @@
+<!doctype html>
+<!--
+Direction C · Surface 2 (phone) · FIELD SALE — dark + keypad-first.
+Design call: Dark theme for low-glare field conditions. Calculator-style numeric stepper
+(not free text) so the rep's input is one motion per kg. Tabular numerals stay aligned at
+every value.
+-->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>C · Field sale · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+:root, [data-theme="dark"] {
+  --bg:#0e1014;
+  --card:#161a21;
+  --card-soft:#1d232b;
+  --border:rgba(255,255,255,0.08);
+  --ink-0:#f0f4f8;
+  --ink-1:#b9c2cc;
+  --ink-2:#7d8693;
+  --ink-3:#525a66;
+  --accent:#7c8cff;
+  --accent-soft:rgba(124,140,255,0.18);
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  font-family:Inter,system-ui,sans-serif;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg); color:var(--ink-0); height:100%; -webkit-font-smoothing:antialiased; }
+body { font-size:17px; line-height:1.4; }
+
+.scene { padding:max(env(safe-area-inset-top,0px),10px) 14px calc(14px + env(safe-area-inset-bottom,0px)); min-height:100vh; display:flex; flex-direction:column; }
+
+.context { display:flex; justify-content:space-between; padding:6px 0 18px; }
+.context .where { font-size:12px; color:var(--ink-2); font-weight:600; text-transform:uppercase; letter-spacing:1.2px; }
+.context .signal { font-size:12px; color:var(--accent); display:flex; align-items:center; gap:6px; font-weight:600; }
+.context .signal .pulse { width:8px; height:8px; border-radius:50%; background:var(--accent); animation:blink 1.6s infinite; }
+@keyframes blink { 0%,100%{opacity:1;}50%{opacity:0.5;} }
+
+/* Headline */
+h1 { font-size:26px; font-weight:700; margin:0 0 4px; letter-spacing:-0.02em; }
+.sub { font-size:13px; color:var(--ink-2); margin:0 0 18px; }
+
+/* The form — three big cells, monospaced/tabular numbers, calculator stepper for kg */
+.field { background:var(--card); border:var(--border); border-radius:14px; padding:16px; margin-bottom:12px; }
+.field-label {
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-size:11px; color:var(--ink-2); text-transform:uppercase; letter-spacing:1.4px; font-weight:700; margin-bottom:10px;
+}
+.field-label .scan { font-size:11px; color:var(--accent); text-transform:none; letter-spacing:0; cursor:pointer; }
+
+.big-input {
+  display:flex; align-items:center; gap:8px;
+  padding:14px 16px;
+  background:var(--bg); border-radius:10px; border:1px solid var(--border);
+  font-family:var(--mono); font-size:24px; font-weight:700;
+  color:var(--ink-0); font-variant-numeric:tabular-nums; letter-spacing:-0.02em;
+}
+.big-input .u { font-size:14px; color:var(--ink-2); font-weight:500; margin-left:4px; }
+.big-input.fish { font-family:Inter,sans-serif; font-size:18px; }
+
+/* Stepper row — kg only. + − 0.1 buttons for fine-adjust. */
+.stepper {
+  display:grid; grid-template-columns:52px 1fr 52px; gap:8px;
+  padding:14px 16px;
+  background:var(--bg); border-radius:10px; border:1px solid var(--border);
+  align-items:stretch;
+}
+.stepper button {
+  border:0; background:var(--card-soft); color:var(--ink-0); font:inherit; font-size:22px; font-weight:700;
+  border-radius:8px; cursor:pointer; height:52px;
+}
+.stepper button:active { background:var(--accent-soft); transform:scale(0.97); }
+.stepper .v { font-family:var(--mono); font-size:38px; font-weight:700; color:var(--ink-0); font-variant-numeric:tabular-nums; align-self:center; text-align:center; padding:6px 0; letter-spacing:-0.03em; }
+.stepper .v .u { font-size:18px; color:var(--ink-2); margin-left:4px; }
+
+/* Buyer chip — full set visible. Dark surface, accent for selected. */
+.chips { display:flex; gap:8px; flex-wrap:wrap; }
+.chip {
+  font:inherit; font-size:14px; font-weight:500;
+  padding:8px 14px; border-radius:9999px;
+  background:var(--card-soft); color:var(--ink-1); border:1px solid var(--border); cursor:pointer;
+}
+.chip.selected { background:var(--accent-soft); color:var(--accent); border-color:rgba(124,140,255,0.4); }
+.chip .ph { font-size:12px; color:var(--ink-2); margin-left:6px; }
+
+/* Total bar */
+.total {
+  background:var(--ink-0); color:var(--bg);
+  border-radius:14px; padding:14px 18px; margin:8px 0 16px;
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.total .l { font-size:11px; color:rgba(11,13,18,0.6); text-transform:uppercase; letter-spacing:1.4px; font-weight:700; }
+.total .v { font-family:var(--mono); font-size:28px; font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-0.02em; }
+
+/* Outbox */
+.outbox {
+  background:rgba(255,164,51,0.08); border:1px solid rgba(255,164,51,0.30);
+  color:#ffb84d; border-radius:10px; padding:10px 12px; margin-bottom:14px;
+  font-size:13px; line-height:1.4;
+}
+.outbox strong { color:var(--ink-0); }
+
+/* Submit */
+.submit { margin-top:auto; padding:12px 0; }
+.submit button {
+  width:100%; padding:20px 0; border-radius:14px; border:0; cursor:pointer;
+  background:var(--accent); color:#0b0d12; font:inherit; font-size:18px; font-weight:700;
+  letter-spacing:-0.01em;
+}
+.submit button:active { transform:scale(0.98); }
+.submit .secondary {
+  margin-top:8px; background:transparent; color:var(--ink-2); font-size:14px; font-weight:500;
+}
+</style>
+</head>
+<body>
+<div class="scene">
+
+  <div class="context">
+    <div class="where">📍 At Saravana Stores</div>
+    <div class="signal"><span class="pulse"></span> 4G</div>
+  </div>
+
+  <h1>Record a sale</h1>
+  <p class="sub">Three fields. Cold-glove friendly. Auto-priced if you want.</p>
+
+  <!-- Buyer -->
+  <div class="field">
+    <div class="field-label">
+      <span>Buyer</span>
+      <a class="scan">+ Add new</a>
+    </div>
+    <div class="chips">
+      <button class="chip selected">Saravana Stores <span class="ph">credit · ₹896 due</span></button>
+      <button class="chip">Green Leaf <span class="ph">over</span></button>
+      <button class="chip">Anand</button>
+      <button class="chip">Walk-in</button>
+    </div>
+  </div>
+
+  <!-- Fish — typed or scanned -->
+  <div class="field">
+    <div class="field-label">
+      <span>SKU / fish</span>
+      <a class="scan">⊟ Scan QR</a>
+    </div>
+    <div class="big-input fish">Pomfret <span class="u">TC-DEMO-01 · 12 kg left</span></div>
+  </div>
+
+  <!-- kg — stepper -->
+  <div class="field">
+    <div class="field-label">
+      <span>Quantity</span>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--ink-2);">kg · step 0.1</span>
+    </div>
+    <div class="stepper">
+      <button type="button" aria-label="decrease">−</button>
+      <div class="v" id="kg">3.5<span class="u">kg</span></div>
+      <button type="button" aria-label="increase">＋</button>
+    </div>
+  </div>
+
+  <!-- Price — typed, mono-locked, with auto-suggest from last 5 sales (D31 in effect).
+       D31: never a broadcast. Price is per-transaction, never published. -->
+  <div class="field">
+    <div class="field-label">
+      <span>₹ per kg <em style="font-weight:500;font-style:normal;color:var(--ink-2);">(your quote · not broadcast)</em></span>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--ink-2);">last: 380 · 380 · 400 · 360 · 380</span>
+    </div>
+    <div class="big-input">
+      380<span class="u">₹/kg</span>
+    </div>
+  </div>
+
+  <div class="total">
+    <div class="l">Total</div>
+    <div class="v" id="total">₹1,330.00</div>
+  </div>
+
+  <div class="outbox">
+    <strong>Offline-tolerant.</strong> Sale enters outbox if signal drops; syncs when
+    3G returns. No data lost in between.
+  </div>
+
+  <div class="submit">
+    <button type="button" aria-label="Submit sale">✓ Record ₹1,330 · Saravana</button>
+    <button type="button" class="secondary">Cancel</button>
+  </div>
+</div>
+</body>
+</html>

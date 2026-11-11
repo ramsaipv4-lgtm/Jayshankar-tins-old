@@ -1,0 +1,285 @@
+<!doctype html>
+<!--
+Direction C · Surface 1 (phone) · FLOOR PICK-LIST — dark + Linear-tabular.
+Design call: Worker is in a dark cold-room or a dim loading dock. Dark mode reduces glare
+on a wet phone, the JetBrains-Mono-style ID rendering reduces mis-scans, tabular numerals
+keep Indian-₹-digit alignment consistent.
+-->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>C · Floor pick-list · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+:root, [data-theme="dark"] {
+  --bg:#0e1014;        /* Linear-panel-equivalent darker */
+  --card:#161a21;
+  --card-soft:#1d232b;
+  --border:rgba(255,255,255,0.08);
+  --ink-0:#f0f4f8;
+  --ink-1:#b9c2cc;
+  --ink-2:#7d8693;
+  --ink-3:#525a66;
+  --accent:#7c8cff;    /* indigo-violet on dark — Linear's #7170ff lineage */
+  --accent-warn:#ffa433;
+  --accent-neg:#ff7066;
+  --accent-soft:rgba(124,140,255,0.18);
+  --accent-warn-soft:rgba(255,164,51,0.18);
+  --accent-neg-soft:rgba(255,112,102,0.18);
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  font-family:Inter,system-ui,sans-serif;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg); color:var(--ink-0); height:100%; -webkit-font-smoothing:antialiased; }
+body { font-size:17px; line-height:1.4; }
+
+.scene { padding:max(env(safe-area-inset-top,0px),10px) 14px 0; min-height:100vh; display:flex; flex-direction:column; }
+
+.context {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:6px 0 14px;
+}
+.context .where { font-size:11px; color:var(--ink-2); text-transform:uppercase; letter-spacing:1.4px; font-weight:600; }
+.context .when { font-size:12px; color:var(--ink-1); font-family:var(--mono); }
+
+/* Hero task — same single-task language as A/B, but darker + monospaced. The container
+   ID is in mono, in tabular-numbers-like spacing, because workers read container numbers
+   aloud to confirm and a monospaced rendering makes mis-reads easier to catch. */
+.next {
+  background:linear-gradient(180deg,var(--card),var(--card-soft));
+  border:var(--border); border-radius:18px;
+  padding:20px 22px; margin-bottom:18px;
+  cursor:pointer;
+}
+.next .id {
+  font-family:var(--mono); font-size:14px; font-weight:700; color:var(--accent);
+  letter-spacing:0.5px;
+}
+.next h1 { font-size:24px; font-weight:700; margin:8px 0 6px; line-height:1.2; letter-spacing:-0.01em; }
+.next .route { font-size:13px; color:var(--ink-2); margin-bottom:18px; line-height:1.5; }
+.next .route .arrow { margin:0 6px; color:var(--ink-3); }
+.next .route b { color:var(--ink-1); font-weight:600; }
+
+.next .nums {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+  padding-top:14px; border-top:1px solid var(--border);
+}
+.next .nums .lab { font-size:10px; color:var(--ink-2); text-transform:uppercase; letter-spacing:1.2px; font-weight:600; margin-bottom:2px; }
+.next .nums .v { font-family:var(--mono); font-size:18px; font-weight:700; color:var(--ink-0); font-variant-numeric:tabular-nums; }
+
+.next .primary {
+  margin-top:18px; width:100%; padding:18px 0; border-radius:12px; border:0; cursor:pointer;
+  background:var(--accent); color:#0b0d12; font:inherit; font-size:17px; font-weight:700;
+  letter-spacing:-0.01em; transition:transform 80ms;
+}
+.next .primary:active { transform:scale(0.98); }
+.next .primary .pulse {
+  display:inline-block; margin-left:8px; font-family:var(--mono); padding:2px 8px;
+  background:rgba(0,0,0,0.15); border-radius:8px; font-size:13px; font-weight:700;
+}
+
+/* Pending list — three visual states: ready, warn, neg. Each gets a colored left rail. */
+.queue-head {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 0 10px; font-size:11px; color:var(--ink-2); text-transform:uppercase;
+  letter-spacing:1.4px; font-weight:700;
+}
+.queue-head .count { font-size:13px; font-family:var(--mono); }
+
+.row {
+  display:flex; gap:12px; align-items:flex-start;
+  background:var(--card); border:var(--border); border-radius:14px;
+  padding:14px 16px; cursor:pointer; width:100%; text-align:left; font:inherit; color:inherit;
+  margin-bottom:8px;
+}
+.row:active { background:var(--card-soft); }
+
+.row .rail {
+  width:4px; align-self:stretch; border-radius:2px;
+  flex-shrink:0;
+}
+.row.ready .rail { background:var(--accent); box-shadow:0 0 12px rgba(124,140,255,0.5); }
+.row.warn .rail { background:var(--accent-warn); }
+.row.neg .rail { background:var(--accent-neg); }
+.row.dim .rail { background:var(--ink-3); }
+
+.row .body { flex:1; min-width:0; }
+.row .id { font-family:var(--mono); font-size:13px; font-weight:600; color:var(--ink-1); }
+.row .what { font-size:17px; font-weight:600; color:var(--ink-0); margin-top:4px; line-height:1.25; }
+.row .sub { font-size:13px; color:var(--ink-2); margin-top:4px; line-height:1.4; }
+.row .pill {
+  display:inline-block; font-size:10px; font-weight:700; text-transform:uppercase;
+  letter-spacing:1.2px; padding:3px 8px; border-radius:6px; margin-right:6px;
+}
+.row.ready .pill { background:var(--accent-soft); color:var(--accent); }
+.row.warn  .pill { background:var(--accent-warn-soft); color:var(--accent-warn); }
+.row.neg   .pill { background:var(--accent-neg-soft); color:var(--accent-neg); }
+.row.dim   .pill { background:rgba(255,255,255,0.06); color:var(--ink-2); }
+
+.row .price {
+  font-family:var(--mono); font-size:13px; color:var(--ink-1); text-align:right;
+  white-space:nowrap; padding-top:2px;
+}
+.row .price .v { font-size:17px; color:var(--ink-0); font-weight:700; }
+.row .price .k { font-size:11px; color:var(--ink-2); margin-top:2px; }
+
+/* Outbox banner — D30 in scope */
+.outbox {
+  background:rgba(255,164,51,0.10); border:1px solid rgba(255,164,51,0.30);
+  color:var(--accent-warn);
+  border-radius:12px; padding:10px 14px; margin:6px 0 12px; font-size:13px;
+  line-height:1.4; display:flex; gap:10px; align-items:center;
+}
+.outbox .dot { width:8px; height:8px; border-radius:50%; background:var(--accent-warn); flex-shrink:0; animation:blink 1.6s infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+/* Theme toggle — proves the dark theme is owned, not accidental */
+.theme-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:6px 0 6px;
+}
+.toggle {
+  display:inline-flex; border:1px solid var(--border); border-radius:9999px;
+  padding:2px; background:rgba(255,255,255,0.04);
+}
+.toggle button {
+  font:inherit; font-size:11px; font-weight:600;
+  padding:4px 10px; border-radius:9999px; border:0; cursor:pointer;
+  background:transparent; color:var(--ink-2);
+}
+.toggle button[aria-pressed="true"] { background:var(--accent); color:#0b0d12; }
+</style>
+</head>
+<body>
+<div class="scene">
+
+  <div class="context">
+    <div class="where">📍 Demo Warehouse · Main</div>
+    <div class="when" id="clock">06:14 IST</div>
+  </div>
+
+  <div class="theme-row" style="margin-left:auto;font-size:11px;color:var(--ink-2);">
+    Worker view
+    <div class="toggle" role="group" aria-label="Theme">
+      <button aria-pressed="false" data-theme-set="light">Light</button>
+      <button aria-pressed="true"  data-theme-set="dark">Dark</button>
+    </div>
+  </div>
+
+  <!-- Outbox banner -->
+  <div class="outbox">
+    <span class="dot"></span>
+    <span><strong>2 writes queued</strong> · will sync when 3G returns</span>
+  </div>
+
+  <!-- Hero "next" task -->
+  <div class="next">
+    <div class="id">TC-DEMO-01 · 1707000a</div>
+    <h1>Pomfret · 3.5 kg · Saravana Stores</h1>
+    <div class="route">
+      <span>Cold-room <b>B-2</b></span>
+      <span class="arrow">→</span>
+      <span>Saravana's <b>bike</b></span>
+      <span class="arrow">→</span>
+      <span><b>Pickup</b>, Royapuram</span>
+    </div>
+    <div class="nums">
+      <div><div class="lab">Amount due</div><div class="v">₹1,330</div></div>
+      <div><div class="lab">Buyer owes</div><div class="v">₹896</div></div>
+      <div><div class="lab">Time</div><div class="v">02:14</div></div>
+    </div>
+    <button class="primary">Handed over · next<span class="pulse">[space]</span></button>
+  </div>
+
+  <div class="queue-head">
+    <div>Pending pickups</div>
+    <div class="count">5</div>
+  </div>
+
+  <div>
+    <button class="row ready">
+      <div class="rail"></div>
+      <div class="body">
+        <div class="id">TC-DEMO-02</div>
+        <div class="what">Squid · 6 kg · Green Leaf Hotel</div>
+        <div class="sub"><span class="pill" style="background:var(--accent-soft);color:var(--accent);">Ready</span>₹3,000 over ₹2,000 limit · admin alerted · Anitha hauling</div>
+      </div>
+      <div class="price"><div class="v">₹500/kg</div><div class="k">07m</div></div>
+    </button>
+
+    <button class="row warn">
+      <div class="rail"></div>
+      <div class="body">
+        <div class="id">TC-DEMO-01</div>
+        <div class="what">Pomfret · 4 kg · Saravana Stores</div>
+        <div class="sub"><span class="pill" style="background:var(--accent-warn-soft);color:var(--accent-warn);">Balance due</span>Partial 60% paid · ₹896 outstanding · tomorrow's visit</div>
+      </div>
+      <div class="price"><div class="v">₹560/kg</div><div class="k">22m</div></div>
+    </button>
+
+    <button class="row ready">
+      <div class="rail"></div>
+      <div class="body">
+        <div class="id">TC-DEMO-03</div>
+        <div class="what">Prawns · 2 kg · Anand (corner)</div>
+        <div class="sub"><span class="pill" style="background:var(--accent-soft);color:var(--accent);">Ready</span>Morning haul · Suresh to deliver · route Royapuram-City</div>
+      </div>
+      <div class="price"><div class="v">₹420/kg</div><div class="k">01h</div></div>
+    </button>
+
+    <button class="row neg">
+      <div class="rail"></div>
+      <div class="body">
+        <div class="id">MURUGAN / DEMO-001</div>
+        <div class="what">Confirm arrival · Mackerel 12 kg</div>
+        <div class="sub"><span class="pill" style="background:var(--accent-neg-soft);color:var(--accent-neg);">Discrepancy</span>Billed 12 · measured 11.5 · 0.5 kg short · choose: accept / re-bill / refuse</div>
+      </div>
+      <div class="price"><div class="v">₹290/kg</div><div class="k">now</div></div>
+    </button>
+
+    <button class="row dim">
+      <div class="rail"></div>
+      <div class="body">
+        <div class="id">RAVI · DEMO-002</div>
+        <div class="what">Confirm arrival · Surmai 24 kg</div>
+        <div class="sub"><span class="pill" style="background:rgba(255,255,255,0.06);color:var(--ink-2);">Pending</span>Vendor waiting · ETA truck no. 7</div>
+      </div>
+      <div class="price"><div class="v">₹410/kg</div><div class="k">+45m</div></div>
+    </button>
+  </div>
+
+</div>
+
+<script>
+  // Theme toggle, dual token ownership
+  const root = document.documentElement;
+  function setTheme(t) {
+    root.setAttribute('data-theme', t);
+    document.querySelectorAll('[data-theme-set]').forEach(b => {
+      b.setAttribute('aria-pressed', String(b.dataset.themeSet === t));
+    });
+    // Light tokens get applied when the user picks light — the mockup renders dark by default.
+    if (t === 'light') {
+      document.body.style.background = '#f4f5f3';
+      document.body.style.color = '#1a1916';
+    } else {
+      document.body.style.background = '';
+      document.body.style.color = '';
+    }
+  }
+  document.querySelectorAll('[data-theme-set]').forEach(b => {
+    b.addEventListener('click', () => setTheme(b.dataset.themeSet));
+  });
+  // Local-time clock
+  function fmt() {
+    const d = new Date();
+    return d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:false }) + ' IST';
+  }
+  document.getElementById('clock').textContent = fmt();
+  setInterval(() => { document.getElementById('clock').textContent = fmt(); }, 30000);
+</script>
+</body>
+</html>

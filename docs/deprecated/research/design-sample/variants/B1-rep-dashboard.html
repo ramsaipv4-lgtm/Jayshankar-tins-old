@@ -1,0 +1,200 @@
+<!doctype html>
+<!--
+Direction B · Rep dashboard · stripe-linear, light with deep-navy, premium dashboard.
+Inter at 300/510 (Stripe hero weight + Linear emphasis weight). Stripe accent #533afd.
+Bottom action bar (persistent CTA, Zoho-pattern adapted to Jayshankar verbs).
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Direction B · Rep dashboard · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;510;600&display=swap" rel="stylesheet" />
+<style>
+:root, [data-theme="light"] {
+  --bg-page:#ffffff;
+  --bg-panel:#0f1011;       /* Linear panel dark, used for the hero accent strip only */
+  --bg-section:#fbfbfd;
+  --bg-card:#ffffff;
+  --bg-card-soft:#f6f7f9;
+  --text-0:#061b31;          /* Stripe deep navy — primary heading */
+  --text-1:#525c6a;          /* slate body */
+  --text-2:#8a93a3;
+  --accent:#533afd;          /* Stripe purple — replaces current #4f46e5 */
+  --accent-hover:#4434d4;
+  --accent-soft:rgba(83,58,253,0.08);
+  --border-0:#e5edf5;        /* Stripe border soft blue */
+  --border-1:#eef2f7;
+  --success:#15be53;
+  --success-soft:rgba(21,190,83,0.12);
+  --danger:#ea2261;          /* Stripe ruby */
+  --shadow-1:rgba(23,23,23,0.06) 0 3px 6px;
+  --shadow-2:rgba(50,50,93,0.25) 0 30px 45px -30px, rgba(0,0,0,0.10) 0 18px 36px -18px;
+  --r-xs:4px; --r-sm:6px; --r-md:12px; --r-lg:16px; --r-pill:9999px;
+  --heading-weight:300;
+  --emphasis-weight:510;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg-page); color:var(--text-0); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+body { font-size:16px; line-height:1.5; }
+
+.shell { display:flex; flex-direction:column; min-height:100vh; }
+.topnav {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px; background:var(--bg-page);
+  border-bottom:1px solid var(--border-0);
+  position:sticky; top:0; z-index:10;
+}
+.brand { font-weight:600; font-size:17px; letter-spacing:-0.01em; color:var(--text-0); font-feature-settings:"ss01"; }
+.brand .accent { color:var(--accent); }
+.iconbtn { width:36px; height:36px; border-radius:var(--r-sm); border:1px solid var(--border-0); background:transparent; display:inline-flex; align-items:center; justify-content:center; color:var(--text-1); cursor:pointer; }
+.iconbtn:hover { background:var(--bg-card-soft); }
+.role-badge { font-size:12px; font-weight:600; padding:4px 10px; border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent); }
+.bell { position:relative; }
+.bell-dot { position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:var(--danger); border:2px solid var(--bg-page); }
+
+/* Hero accent strip — Stripe "session" line on top of role hero */
+.hero-strip { background:linear-gradient(180deg,#0f1011,#1a1b1f); color:#f7f8f8; padding:28px 20px; }
+.hero-inner { max-width:1280px; margin:0 auto; }
+.hero-inner h1 { margin:0; font-size:32px; font-weight:var(--heading-weight); letter-spacing:-1.0px; color:#f7f8f8; line-height:1.05; }
+.hero-inner .sub { font-size:14px; color:#8a8f98; margin-top:6px; }
+.hero-inner .quickstat { display:flex; gap:32px; margin-top:18px; flex-wrap:wrap; }
+.hero-inner .quickstat > div .l { font-size:11px; text-transform:uppercase; letter-spacing:1.4px; color:#8a8f98; font-weight:var(--emphasis-weight); }
+.hero-inner .quickstat > div .v { font-size:20px; font-weight:var(--emphasis-weight); color:#f7f8f8; margin-top:2px; }
+
+main { padding:20px 20px calc(120px + env(safe-area-inset-bottom,0px)); max-width:1280px; margin:0 auto; width:100%; }
+section { background:var(--bg-card); border:1px solid var(--border-0); border-radius:var(--r-md); padding:24px; margin-bottom:16px; }
+section.section-dark { background:var(--bg-panel); border-color:transparent; color:#f7f8f8; }
+h2 { font-size:18px; font-weight:var(--heading-weight); letter-spacing:-0.5px; margin:0 0 4px; color:var(--text-0); }
+section.section-dark h2 { color:#f7f8f8; }
+.section-sub { font-size:13px; color:var(--text-1); margin:0 0 18px; }
+section.section-dark .section-sub { color:#d0d6e0; }
+
+/* KPI strip — Stripe card-grid */
+.kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+.kpi { background:var(--bg-card-soft); border-radius:var(--r-sm); padding:12px 14px; }
+.kpi .label { font-size:11px; color:var(--text-2); text-transform:uppercase; letter-spacing:1.4px; font-weight:var(--emphasis-weight); }
+.kpi .value { font-size:28px; font-weight:var(--heading-weight); color:var(--text-0); margin-top:2px; letter-spacing:-1.0px; line-height:1.1; }
+.kpi .delta { font-size:12px; color:var(--success); margin-top:2px; }
+
+/* Action grid — Stripe's emphasis on restraint, action-tile shape */
+.action-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+.action-tile {
+  background:var(--bg-card); border:1px solid var(--border-0); border-radius:var(--r-sm);
+  padding:14px;
+  display:flex; flex-direction:column; gap:8px;
+  text-decoration:none; color:inherit; cursor:pointer;
+  min-height:88px; justify-content:space-between;
+}
+.action-tile:hover { background:var(--bg-card-soft); border-color:var(--accent); }
+.action-tile .ico { width:28px; height:28px; border-radius:var(--r-xs); background:var(--accent-soft); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:16px; }
+.action-tile .label { font-size:14px; font-weight:var(--emphasis-weight); color:var(--text-0); line-height:1.25; letter-spacing:-0.3px; }
+.action-tile .sub { font-size:12px; color:var(--text-2); line-height:1.25; }
+.action-tile.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+.action-tile.primary .ico { background:rgba(255,255,255,0.18); color:#fff; }
+.action-tile.primary .label, .action-tile.primary .sub { color:#fff; }
+.action-tile.primary .sub { color:rgba(255,255,255,0.7); }
+.action-tile.primary:hover { background:var(--accent-hover); border-color:var(--accent-hover); }
+
+/* Activity */
+.activity-row { display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid var(--border-1); }
+.activity-row:last-child { border-bottom:none; }
+.activity-row .meta { font-size:13px; color:var(--text-1); flex:1; line-height:1.4; }
+.activity-row .meta strong { color:var(--text-0); font-weight:510; }
+.activity-row .when { font-size:12px; color:var(--text-2); font-variant-numeric:tabular-nums; }
+.activity-row .dot { width:6px; height:6px; border-radius:50%; background:var(--text-2); flex-shrink:0; }
+.activity-row .dot.sale { background:var(--success); }
+.activity-row .dot.delivery { background:var(--accent); }
+.activity-row .dot.neg { background:var(--danger); }
+
+/* Persistent bottom action bar — Zoho/Sortly-derivable pattern, Jayshankar verbs */
+.bottombar {
+  position:fixed; left:0; right:0; bottom:0;
+  background:var(--bg-card); border-top:1px solid var(--border-0);
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+  display:flex; gap:8px;
+  z-index:9;
+}
+.bottombar button {
+  flex:1; height:44px; border-radius:var(--r-sm); border:0; cursor:pointer;
+  font:inherit; font-size:14px; font-weight:var(--emphasis-weight); letter-spacing:-0.2px;
+}
+.bottombar .secondary { background:transparent; color:var(--text-1); border:1px solid var(--border-0); }
+.bottombar .primary { background:var(--accent); color:#fff; }
+.bottombar .primary:hover { background:var(--accent-hover); }
+
+@media (min-width:760px) {
+  .action-grid { grid-template-columns:repeat(4,1fr); }
+  .kpis { grid-template-columns:repeat(4,1fr); }
+  .bottombar { display:none; }
+  main { padding-bottom:32px; }
+}
+@media (min-width:1024px) {
+  .action-grid { grid-template-columns:repeat(5,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="topnav">
+    <button class="iconbtn" aria-label="Open menu"><span aria-hidden="true">≡</span></button>
+    <div class="brand">Jayshankar<span class="accent">.</span></div>
+    <div style="flex:1;"></div>
+    <button class="iconbtn bell" aria-label="Notifications (3 unread)"><span aria-hidden="true">🔔</span><span class="bell-dot"></span></button>
+    <span class="role-badge">Receiving &amp; sales</span>
+    <button class="iconbtn" aria-label="Sign out"><span aria-hidden="true">⎋</span></button>
+  </header>
+
+  <div class="hero-strip">
+    <div class="hero-inner">
+      <h1>Good morning, Karthik.</h1>
+      <p class="sub">3 tasks · Demo Warehouse · today, 14 Sep</p>
+      <div class="quickstat">
+        <div><div class="l">Sales today</div><div class="v">₹34,200</div></div>
+        <div><div class="l">Kg sold</div><div class="v">87.5</div></div>
+        <div><div class="l">Low stock</div><div class="v">2</div></div>
+        <div><div class="l">Containers expiring</div><div class="v">4</div></div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section>
+      <h2>What do you want to do?</h2>
+      <p class="section-sub">All 10 actions for your role — primary tasks highlighted.</p>
+      <div class="action-grid">
+        <button class="action-tile primary"><span class="ico">＋</span><div><div class="label">Record a delivery</div><div class="sub">Receive from fisherman</div></div></button>
+        <button class="action-tile primary"><span class="ico">₹</span><div><div class="label">Record a sale</div><div class="sub">Haul to a buyer</div></div></button>
+        <button class="action-tile"><span class="ico">▣</span><div><div class="label">Pack a container</div><div class="sub">Packing + QR</div></div></button>
+        <button class="action-tile"><span class="ico">⇄</span><div><div class="label">Repack</div><div class="sub">Consolidate stock</div></div></button>
+        <button class="action-tile"><span class="ico">⊘</span><div><div class="label">Record spoilage</div><div class="sub">Spoilt in warehouse</div></div></button>
+        <button class="action-tile"><span class="ico">≡</span><div><div class="label">Bills</div><div class="sub">View &amp; reconcile</div></div></button>
+        <button class="action-tile"><span class="ico">◎</span><div><div class="label">Customers</div><div class="sub">Credit &amp; balances</div></div></button>
+        <button class="action-tile"><span class="ico">₹</span><div><div class="label">Payments</div><div class="sub">Record a payment</div></div></button>
+        <button class="action-tile"><span class="ico">⟲</span><div><div class="label">Reversals</div><div class="sub">Request / approve</div></div></button>
+        <button class="action-tile"><span class="ico">⊕</span><div><div class="label">Complaints</div><div class="sub">File / resolve</div></div></button>
+      </div>
+    </section>
+
+    <section class="section-dark">
+      <h2>Recent activity</h2>
+      <p class="section-sub">Last few movements across the warehouse.</p>
+      <div class="activity-row"><span class="dot sale"></span><span class="meta"><strong>Sale</strong> · 3.5 kg Pomfret to Saravana Stores</span><span class="when">2m ago</span></div>
+      <div class="activity-row"><span class="dot delivery"></span><span class="meta"><strong>Delivery</strong> · 12 kg Prawns from Muthu (Selvam)</span><span class="when">11m ago</span></div>
+      <div class="activity-row"><span class="dot sale"></span><span class="meta"><strong>Sale</strong> · 8 kg Mackerel to Anand</span><span class="when">42m ago</span></div>
+      <div class="activity-row"><span class="dot neg"></span><span class="meta"><strong>Reversal</strong> requested · 2 kg Squid · pending admin review</span><span class="when">1h ago</span></div>
+    </section>
+  </main>
+
+  <!-- Persistent phone-only bottom action bar — Zoho pattern adapted -->
+  <div class="bottombar">
+    <button class="secondary" aria-label="Search">⌕ Search</button>
+    <button class="primary" aria-label="Record a sale">₹ Record a sale</button>
+  </div>
+
+</div>
+</body>
+</html>

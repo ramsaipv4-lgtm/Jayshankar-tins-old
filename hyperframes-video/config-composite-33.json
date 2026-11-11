@@ -1,0 +1,24 @@
+{
+  "dir": "composite-33-return-resolve",
+  "videoFile": "33-return-partial-resolve.mp4",
+  "videoId": "composite-33-recording",
+  "rawDuration": 37.88,
+  "titleKicker": "Jayshankar · Tutorial",
+  "titleBrand": "A Complaint, Resolved",
+  "titleTag": "A customer calls back — split what's actually bad from what's fine, refund only that.",
+  "headerKicker": "Tutorial · Complaints & Returns",
+  "headerHeadline": "A Complaint, Resolved",
+  "captions": [
+    { "text": "Sign in, deliver a fresh batch", "start": 2.5, "dur": 3.5 },
+    { "text": "Received — now sell some of it", "start": 6.0, "dur": 6.0 },
+    { "text": "Pick the buyer, kg sold, price — recorded", "start": 12.0, "dur": 6.0 },
+    { "text": "The customer calls back with a complaint", "start": 18.0, "dur": 2.0 },
+    { "text": "File it against that sale: kg returned, what they said", "start": 20.0, "dur": 6.0 },
+    { "text": "Admin reviews it", "start": 26.0, "dur": 4.0 },
+    { "text": "Split the returned kg — how much is actually bad?", "start": 30.0, "dur": 2.0 },
+    { "text": "Some bad, some fine and restocked — refund only what's owed", "start": 32.0, "dur": 4.0 },
+    { "text": "Resolved — the refund is calculated automatically", "start": 36.0, "dur": 4.38 }
+  ],
+  "closeBrand": "Jayshankar",
+  "closeTag": "One return, three possible outcomes — bad, restocked, or rejected — each priced correctly."
+}

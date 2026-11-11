@@ -1,0 +1,239 @@
+<!doctype html>
+<!--
+Direction C · Rep dashboard · linear-warp, dark worker-primary, fast.
+Linear panel dark + Warp warm-dark accent. Used here as the dark theme for worker + floor.
+Admin/rep can toggle to light via the theme switcher; for this mockup we render the dark
+default because the rep-on-floor scenario is the operative one for Jayshankar.
+-->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Direction C · Rep dashboard · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;510;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* DARK theme — Linear panel + Warp warmth */
+:root, [data-theme="dark"] {
+  --bg-page:#0f1011;          /* Linear panel dark */
+  --bg-section:#191a1b;       /* Level 3 surface */
+  --bg-card:#191a1b;
+  --bg-card-soft:#28282c;
+  --bg-hover:#34343a;
+  --text-0:#f7f8f8;           /* primary warm-white, not pure */
+  --text-1:#d0d6e0;
+  --text-2:#8a8f98;
+  --text-3:#62666d;
+  --accent:#7170ff;           /* Linear violet — slightly brighter on dark */
+  --accent-hover:#828fff;
+  --accent-soft:rgba(113,112,255,0.12);
+  --border-0:rgba(255,255,255,0.08); /* Linear whisper border */
+  --border-1:rgba(255,255,255,0.05);
+  --border-2:#23252a;
+  --success:#10b981;
+  --success-soft:rgba(16,185,129,0.15);
+  --danger:#f87171;
+  --shadow-1:rgba(0,0,0,0.2) 0 0 0 1px;
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:14px; --r-pill:9999px;
+  --heading-weight:510;
+  --body-weight:400;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg-page); color:var(--text-0); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+body { font-size:16px; line-height:1.5; }
+
+.shell { display:flex; flex-direction:column; min-height:100vh; }
+.topnav {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px; background:rgba(15,16,17,0.92);
+  backdrop-filter:saturate(180%) blur(8px);
+  border-bottom:1px solid var(--border-0);
+  position:sticky; top:0; z-index:10;
+}
+.brand { font-weight:510; font-size:16px; letter-spacing:-0.5px; color:var(--text-0); font-feature-settings:"cv01","ss03"; }
+.brand .accent { color:var(--accent); }
+.iconbtn { width:36px; height:36px; border-radius:var(--r-sm); border:1px solid var(--border-0); background:rgba(255,255,255,0.03); color:var(--text-1); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; }
+.iconbtn:hover { background:rgba(255,255,255,0.07); border-color:var(--accent); }
+.role-badge { font-size:11px; font-weight:510; padding:4px 10px; border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent); border:1px solid rgba(113,112,255,0.24); letter-spacing:0.5px; text-transform:uppercase; }
+.bell { position:relative; }
+.bell-dot { position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:var(--danger); border:2px solid var(--bg-page); }
+
+/* Section blocks */
+main { padding:20px; padding-bottom:calc(96px + env(safe-area-inset-bottom,0px)); max-width:1280px; margin:0 auto; width:100%; }
+section { background:var(--bg-card); border:1px solid var(--border-0); border-radius:var(--r-md); padding:20px; margin-bottom:14px; }
+h2 { font-size:11px; font-weight:510; text-transform:uppercase; letter-spacing:1.4px; color:var(--text-3); margin:0 0 14px; }
+.greeting h1 { font-size:22px; font-weight:510; color:var(--text-0); margin:0 0 4px; letter-spacing:-0.5px; }
+.greeting p { font-size:13px; color:var(--text-2); margin:0; }
+
+/* KPI strip — dark variant */
+.kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+.kpi { background:var(--bg-card-soft); border-radius:var(--r-sm); padding:12px 14px; }
+.kpi .label { font-size:10px; color:var(--text-3); text-transform:uppercase; letter-spacing:1.0px; font-weight:510; }
+.kpi .value { font-size:24px; font-weight:510; color:var(--text-0); margin-top:2px; letter-spacing:-0.5px; line-height:1.1; font-feature-settings:"tnum"; }
+.kpi .delta { font-size:11px; color:var(--success); margin-top:2px; }
+
+/* Action grid — Warp "block" style: bigger hit areas, less chrome */
+.action-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.action-tile {
+  background:var(--bg-card);
+  border:1px solid var(--border-0);
+  border-radius:var(--r-md);
+  padding:16px;
+  min-height:96px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  text-decoration:none; color:inherit; cursor:pointer;
+  transition: background 120ms, border-color 120ms;
+}
+.action-tile:hover { background:var(--bg-card-soft); border-color:rgba(113,112,255,0.4); }
+.action-tile .ico {
+  width:36px; height:36px; border-radius:var(--r-sm);
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(113,112,255,0.15); color:var(--accent);
+  font-size:18px; font-weight:510;
+}
+.action-tile .label { font-size:15px; font-weight:510; color:var(--text-0); line-height:1.25; margin-top:10px; letter-spacing:-0.3px; }
+.action-tile .sub { font-size:12px; color:var(--text-3); line-height:1.25; margin-top:2px; }
+.action-tile.primary {
+  background:linear-gradient(180deg,rgba(113,112,255,0.18),rgba(113,112,255,0.06));
+  border-color:rgba(113,112,255,0.4);
+}
+.action-tile.primary .ico { background:rgba(113,112,255,0.4); color:#fff; }
+
+/* Activity rows */
+.activity-row { display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid var(--border-1); }
+.activity-row:last-child { border-bottom:none; }
+.activity-row .meta { font-size:13px; color:var(--text-1); flex:1; line-height:1.4; }
+.activity-row .meta strong { color:var(--text-0); font-weight:510; }
+.activity-row .when { font-size:12px; color:var(--text-3); font-feature-settings:"tnum"; }
+.activity-row .dot { width:6px; height:6px; border-radius:50%; background:var(--text-3); flex-shrink:0; }
+.activity-row .dot.sale { background:var(--success); }
+.activity-row .dot.delivery { background:var(--accent); }
+
+/* Bottom action bar (sticky on phone) — bigger touch targets, single primary */
+.bottombar {
+  position:fixed; left:0; right:0; bottom:0;
+  background:rgba(15,16,17,0.96); backdrop-filter:saturate(180%) blur(8px);
+  border-top:1px solid var(--border-0);
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+  display:flex; gap:10px;
+  z-index:9;
+}
+.bottombar button {
+  flex:1; height:52px; border-radius:var(--r-sm); border:0; cursor:pointer;
+  font:inherit; font-size:14px; font-weight:510; letter-spacing:0.3px; text-transform:uppercase;
+}
+.bottombar .secondary { background:rgba(255,255,255,0.06); color:var(--text-1); border:1px solid var(--border-0); }
+.bottombar .primary { background:var(--accent); color:#fff; }
+.bottombar .primary:hover { background:var(--accent-hover); }
+
+/* THEME TOGGLE — proves dual-token presence; Linear/Warp home won't actually show this,
+   but including it for honest visual evidence of the dark-theme ownership */
+.theme-toggle {
+  display:inline-flex; align-items:center; gap:0;
+  border:1px solid var(--border-0); border-radius:var(--r-pill);
+  padding:2px;
+  background:rgba(255,255,255,0.04);
+}
+.theme-toggle button {
+  font:inherit; font-size:11px; font-weight:510;
+  padding:4px 10px; border-radius:var(--r-pill); border:0; cursor:pointer;
+  background:transparent; color:var(--text-2);
+}
+.theme-toggle button[aria-pressed="true"] {
+  background:var(--accent); color:#fff;
+}
+
+@media (min-width:760px) {
+  .action-grid { grid-template-columns:repeat(4,1fr); }
+  .kpis { grid-template-columns:repeat(4,1fr); }
+  main { padding-bottom:32px; }
+  .bottombar { display:none; }
+}
+@media (min-width:1024px) {
+  .action-grid { grid-template-columns:repeat(5,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="topnav">
+    <button class="iconbtn" aria-label="Open menu"><span aria-hidden="true">≡</span></button>
+    <div class="brand">Jayshankar<span class="accent">.</span></div>
+    <div style="flex:1;"></div>
+    <div class="theme-toggle" role="group" aria-label="Theme">
+      <button aria-pressed="false" data-theme-set="light">Light</button>
+      <button aria-pressed="true"  data-theme-set="dark">Dark</button>
+    </div>
+    <button class="iconbtn bell" aria-label="Notifications (3 unread)"><span aria-hidden="true">🔔</span><span class="bell-dot"></span></button>
+    <span class="role-badge">Receiving &amp; sales</span>
+    <button class="iconbtn" aria-label="Sign out"><span aria-hidden="true">⎋</span></button>
+  </header>
+
+  <main>
+    <section class="greeting">
+      <h1>Good morning, Karthik.</h1>
+      <p>3 tasks · Demo Warehouse · today, 14 Sep</p>
+    </section>
+
+    <section>
+      <h2>Today</h2>
+      <div class="kpis">
+        <div class="kpi"><div class="label">Sales</div><div class="value">₹34,200</div><div class="delta">+12%</div></div>
+        <div class="kpi"><div class="label">Kg sold</div><div class="value">87.5</div><div class="delta">+8%</div></div>
+        <div class="kpi"><div class="label">Low stock</div><div class="value">2</div><div class="delta" style="color:var(--danger)">Prawns, Squid</div></div>
+        <div class="kpi"><div class="label">Containers expiring</div><div class="value">4</div><div class="delta" style="color:var(--danger)">Today/tmrw</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>What do you want to do?</h2>
+      <div class="action-grid">
+        <button class="action-tile primary"><span class="ico">＋</span><div><div class="label">Record a delivery</div><div class="sub">Receive from fisherman</div></div></button>
+        <button class="action-tile primary"><span class="ico">₹</span><div><div class="label">Record a sale</div><div class="sub">Haul to a buyer</div></div></button>
+        <button class="action-tile"><span class="ico">▣</span><div><div class="label">Pack a container</div><div class="sub">Packing + QR</div></div></button>
+        <button class="action-tile"><span class="ico">⇄</span><div><div class="label">Repack</div><div class="sub">Consolidate stock</div></div></button>
+        <button class="action-tile"><span class="ico">⊘</span><div><div class="label">Record spoilage</div><div class="sub">Spoilt in warehouse</div></div></button>
+        <button class="action-tile"><span class="ico">≡</span><div><div class="label">Bills</div><div class="sub">View &amp; reconcile</div></div></button>
+        <button class="action-tile"><span class="ico">◎</span><div><div class="label">Customers</div><div class="sub">Credit &amp; balances</div></div></button>
+        <button class="action-tile"><span class="ico">₹</span><div><div class="label">Payments</div><div class="sub">Record a payment</div></div></button>
+        <button class="action-tile"><span class="ico">⟲</span><div><div class="label">Reversals</div><div class="sub">Request / approve</div></div></button>
+        <button class="action-tile"><span class="ico">⊕</span><div><div class="label">Complaints</div><div class="sub">File / resolve</div></div></button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Recent</h2>
+      <div class="activity-row"><span class="dot sale"></span><span class="meta"><strong>Sale</strong> · 3.5 kg Pomfret to Saravana Stores</span><span class="when">2m</span></div>
+      <div class="activity-row"><span class="dot delivery"></span><span class="meta"><strong>Delivery</strong> · 12 kg Prawns from Muthu (Selvam)</span><span class="when">11m</span></div>
+      <div class="activity-row"><span class="dot sale"></span><span class="meta"><strong>Sale</strong> · 8 kg Mackerel to Anand</span><span class="when">42m</span></div>
+      <div class="activity-row"><span class="dot"></span><span class="meta"><strong>Repack</strong> · TC-DEMO-02 → TC-DEMO-03 (4 kg Pomfret)</span><span class="when">1h</span></div>
+    </section>
+  </main>
+
+  <div class="bottombar">
+    <button class="secondary">⌕ Search</button>
+    <button class="primary">₹ Record a sale</button>
+  </div>
+
+</div>
+<script>
+  // Theme toggle: switch data-theme on <html>, persist to localStorage.
+  const root = document.documentElement;
+  const setTheme = (t) => {
+    root.setAttribute('data-theme', t);
+    localStorage.setItem('jayshankar-theme', t);
+    document.querySelectorAll('[data-theme-set]').forEach(b => {
+      b.setAttribute('aria-pressed', String(b.dataset.themeSet === t));
+    });
+  };
+  document.querySelectorAll('[data-theme-set]').forEach(b => {
+    b.addEventListener('click', () => setTheme(b.dataset.themeSet));
+  });
+  // Initial: from storage, else fallback to current attribute.
+  const stored = localStorage.getItem('jayshankar-theme');
+  if (stored) setTheme(stored);
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SPEC §3.5: system font stack, no web font. */
+html, body, #root {
+  height: 100%;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* SPEC §3.5: visible focus rings on all interactive elements. */
+*:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Storybook (/storybook) — motion.
+
+   The picture book animates entirely through the keyframes declared in
+   tailwind.config.ts (animate-sb-*), so there is no animation library in the
+   dependency tree. The only thing CSS has to do here is the accessibility guard:
+   the client reviews this deck on a phone, and a page-turn on every step is
+   exactly the kind of thing that causes motion sickness when it cannot be
+   switched off. `reduce` therefore collapses every storybook animation to a
+   single frame rather than merely shortening it.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .animate-sb-page,
+  .animate-sb-rise,
+  .animate-sb-pop,
+  .animate-sb-draw,
+  .animate-sb-grow,
+  .animate-sb-grow-x,
+  .animate-sb-arrow,
+  .animate-sb-sheen {
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Phase A — shadcn/ui design tokens (Screen 1 of 12, client reference prompt-1.jpg).
+
+   The values are shadcn's canonical slate ramp EXCEPT primary / ring / destructive,
+   which are pinned to this project's own SPEC §3.5 colours so shadcn components match
+   the rest of the app rather than importing a second, conflicting blue:
+     primary, ring   indigo-600  #4f46e5  -> 243 75% 59%
+     destructive     red-600     #dc2626  -> 0 72% 51%
+   --border is deliberately the same #e5e7eb (220 13% 91%) that Tailwind already used
+   as its default border colour, so mapping borderColor.DEFAULT to it in
+   tailwind.config.ts changes nothing on the screens that already exist.
+
+   No `.dark` block and no base-layer overrides (`* { @apply border-border }` etc.) on
+   purpose: this app has no dark mode, and a global border/background reset would
+   silently restyle the screens that are not part of this task.
+--------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 243 75% 59%;
+    --radius: 0.75rem;
+  }
+}
+
+
+/* The Compare page embeds each deck with ?embed=1: draw just the device and its caption. */
+html[data-embed='1'] [data-chrome] { display: none !important; }
+html[data-embed='1'] body { background: transparent; }

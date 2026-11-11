@@ -1,0 +1,31 @@
+{
+  "_comment": "delegation/ORCHESTRATION.json — the run config for an autonomous build (D32). Copy into the consumer project's delegation/ folder and fill in. Read by scripts/orchestrate.mjs; also read by an auditor spawning workers natively. See prompts/AUTONOMOUS-BUILD.md Step 3.",
+
+  "harness": "generic",
+  "_harness": "claude-code | codex | generic. Selects which workerCmd preset applies. Purely descriptive if your harness spawns subagents natively.",
+
+  "workerCmd": "",
+  "_workerCmd": "The command that starts ONE worker session, as a shell command line. {{TASK_ID}} and {{PROMPT_FILE}} are substituted. Leave empty if your harness spawns subagents natively — then orchestrate.mjs is not used at all. Copy one of the shapes from _workerCmdPresets below and CONFIRM IT against that CLI's own --help before the first wave: flags move, and a stale preset fails identically for every task, at 3am, three times over. Run one worker by hand on one task first.",
+
+  "_workerCmdPresets": {
+    "_note": "Verified 2026-08-26 against each tool's own headless/non-interactive documentation. All three also accept a prompt on stdin and exit 0 on success, which is what orchestrate.mjs reads. Re-check before relying on them — this is exactly the kind of claim SPEC-AUTHOR.md's B-pass (check for rot) exists to catch.",
+    "claude-code": "claude -p \"$(cat {{PROMPT_FILE}}) --- TASK: {{TASK_ID}}\" --permission-mode acceptEdits --output-format json",
+    "codex": "codex exec --full-auto -s workspace-write \"$(cat {{PROMPT_FILE}}) --- TASK: {{TASK_ID}}\"",
+    "gemini": "gemini -p \"$(cat {{PROMPT_FILE}}) --- TASK: {{TASK_ID}}\" --output-format json"
+  },
+  "_remoteWorkers": "For execution mode `auditor-remote` (D35) the auditor runs here and the workers run on another provider's CLI. Watch for capability asymmetry: a weaker worker model needs a tighter brief and a narrower task, and it fails subtly and confidently rather than loudly. For a genuinely hard task — a from-scratch algorithm, a security-sensitive path, a concurrency question — put that one on a frontier model at extended/max thinking.",
+
+  "maxParallel": 2,
+  "_maxParallel": "How many workers run at once. Start at 2-3. More contention than you expect comes from the gate, not the code.",
+
+  "maxRetries": 1,
+  "_maxRetries": "How many times a failing task is re-issued to a FRESH worker before it is marked failed. The auditor never patches worker output itself — that would make it both author and reviewer.",
+
+  "tierPolicy": {
+    "autoDecide": ["T0", "T1"]
+  },
+  "_tierPolicy": "Which escalation tiers a worker may decide alone. T2 always stops and asks. Uncertainty resolves to T2, never T1 — see lib/patterns/tiered-escalation.md §1.2.",
+
+  "haltOn": [],
+  "_haltOn": "Conditions that stop the WHOLE run rather than parking one task. Keep this near-empty: a T2 parks its own task and its dependents, and everything else keeps building. Reasonable entries: 'gate-red-after-integration', 'repo-dirty-outside-task-scope'."
+}

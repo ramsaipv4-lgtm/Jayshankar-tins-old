@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Jayshankar PWA icon. Single SVG, used as the manifest icon (sizes="any") and
+  the browser favicon. SPEC §0.2 D6 + D14: the demo banner code never ships in
+  production builds, but the PWA icon is part of the PWA itself (allowed in
+  every mode). SPEC D13: iOS is locked out in V1, so we don't need apple-touch
+  PNGs. The Android install banner uses this SVG.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Jayshankar">
+  <!-- background: indigo-600 (#4f46e5) rounded square. 80px corner radius
+       keeps the icon safe inside Android's adaptive-icon mask. -->
+  <rect width="512" height="512" rx="96" ry="96" fill="#4f46e5"/>
+
+  <!-- subtle wave at the bottom — slate-100 at 20% opacity. Decorative only. -->
+  <path d="M 0 400 Q 64 376 128 400 T 256 400 T 384 400 T 512 400 L 512 512 L 0 512 Z"
+        fill="#ffffff" fill-opacity="0.18"/>
+
+  <!-- fish body: a horizontal lens (ellipse-ish) drawn with two cubic curves.
+       Centered at (240, 240), body length ~ 260px, height ~ 110px. -->
+  <path d="M 110 240
+           C 130 180, 280 180, 360 220
+           L 420 180
+           L 420 300
+           L 360 260
+           C 280 300, 130 300, 110 240 Z"
+        fill="#ffffff"/>
+
+  <!-- gill curve — small arc on the body, gives the fish its "face" -->
+  <path d="M 175 215 Q 165 240 175 265"
+        fill="none" stroke="#4f46e5" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- eye — indigo dot -->
+  <circle cx="148" cy="232" r="9" fill="#4f46e5"/>
+  <circle cx="148" cy="232" r="3" fill="#ffffff"/>
+
+  <!-- top fin — small triangle on the back of the fish -->
+  <path d="M 230 195 L 260 165 L 280 195 Z" fill="#ffffff" fill-opacity="0.85"/>
+
+  <!-- bottom fin — small triangle on the belly -->
+  <path d="M 230 285 L 260 315 L 280 285 Z" fill="#ffffff" fill-opacity="0.85"/>
+</svg>

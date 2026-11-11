@@ -1,0 +1,23 @@
+{
+  "dir": "composite-31-receive-pack-sell",
+  "videoFile": "31-receive-pack-sell.mp4",
+  "videoId": "composite-31-recording",
+  "rawDuration": 25.16,
+  "titleKicker": "Jayshankar · Tutorial",
+  "titleBrand": "Receive → Pack → Sell",
+  "titleTag": "One batch's whole life, start to finish — as one rep, in real time.",
+  "headerKicker": "Tutorial · Full Cycle",
+  "headerHeadline": "Receive → Pack → Sell",
+  "captions": [
+    { "text": "Sign in, then tap + Delivery", "start": 2.5, "dur": 3.5 },
+    { "text": "Pick the vendor, location, and fish", "start": 6.0, "dur": 3.5 },
+    { "text": "Kg received, price paid — submit", "start": 9.5, "dur": 3.0 },
+    { "text": "Recorded — now pack it into a container", "start": 12.5, "dur": 2.0 },
+    { "text": "Name the container, set its capacity", "start": 14.5, "dur": 3.0 },
+    { "text": "Packed. Time to sell it", "start": 17.5, "dur": 2.0 },
+    { "text": "+ Sale — same fish, same place, a buyer", "start": 19.5, "dur": 3.0 },
+    { "text": "Sold — straight out of the container you just packed", "start": 22.5, "dur": 5.16 }
+  ],
+  "closeBrand": "Jayshankar",
+  "closeTag": "One bill in, one container packed, one sale out — every step tracked by itself."
+}

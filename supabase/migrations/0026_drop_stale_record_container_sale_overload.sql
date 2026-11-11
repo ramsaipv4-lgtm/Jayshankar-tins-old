@@ -1,0 +1,32 @@
+-- 0026_drop_stale_record_container_sale_overload.sql — Jayshankar V1 sprint
+-- Fixes a real bug found while seeding demo data, not invented in review: `CREATE OR REPLACE
+-- FUNCTION` only replaces a function with the EXACT SAME parameter list. Migration 0015 added
+-- `p_customer_id` to `record_container_sale` — a real parameter-count change from migration
+-- 0009's original 6-parameter signature — so Postgres created a SECOND overload rather than
+-- replacing the first. The original 6-parameter version has sat alongside the 7-parameter one
+-- ever since, live, un-dropped, through migrations 0015/0023/0024.
+--
+-- Consequence, confirmed live: PostgREST resolves an RPC call to the overload whose parameter
+-- NAMES match the JSON body. A call that includes every key literally (`p_customer_id: null`
+-- included, which is what src/lib/mutations.ts's recordSale() always does — `input.customerId
+-- ?? null`, never an omitted key) resolves unambiguously to the 7-parameter version, so the
+-- real app's frontend was never actually affected. But a call that OMITS the `p_customer_id`
+-- key entirely (found live, seeding demo data, in scripts/seed-demo-showcase.mjs's own free-
+-- text-buyer sale) fails with PGRST203 — PostgREST can't choose between the two candidates.
+-- Any future caller that omits the key (a different script, a direct API call, a future
+-- refactor) would hit the identical failure. See BUILDER-DECISIONS-REVIEW.md decision #73.
+--
+-- Checked this isn't a wider problem before writing this migration, not assumed isolated: every
+-- OTHER function in this project that gained a parameter across migrations (record_bill_
+-- delivery, record_container_fill, record_repack, create_task, create_task_round_robin,
+-- request_sale_reversal) kept its exact original parameter list every time it was re-issued —
+-- record_container_sale is the only one whose signature actually changed shape.
+--
+-- Fix: explicitly DROP the stale 6-parameter overload by its exact original signature. Not
+-- idempotent in the usual "safe to re-run" sense a CREATE OR REPLACE is — DROP FUNCTION errors
+-- if the function doesn't exist — so this uses DROP FUNCTION IF EXISTS, which is both safe to
+-- re-run and correctly a no-op once the stale overload is gone.
+--
+-- Apply order: AFTER 0001-0025.
+
+drop function if exists public.record_container_sale(uuid, uuid, text, numeric, numeric, text);

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Focus</title>
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="app__header">
+      <h1 class="app__title">Focus</h1>
+      <p class="app__tagline">One list. What is left, and what is done.</p>
+    </header>
+
+    <p id="storage-notice" class="notice" role="status" hidden>
+      Storage is unavailable, so this list is kept in memory only and will be
+      lost when the tab closes.
+    </p>
+
+    <form id="new-todo-form" class="new-todo" novalidate>
+      <label class="visually-hidden" for="new-todo-input">New todo</label>
+      <input
+        id="new-todo-input"
+        class="new-todo__input"
+        type="text"
+        name="text"
+        placeholder="What needs doing?"
+        autocomplete="off"
+        enterkeyhint="done">
+      <button class="btn btn--primary" type="submit">Add</button>
+    </form>
+
+    <div class="toolbar">
+      <p class="toolbar__count">
+        <span id="remaining-count" aria-live="polite" aria-atomic="true">0 remaining</span>
+      </p>
+      <div id="filters" class="filters" role="group" aria-label="Filter todos">
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter" type="button" data-filter="active" aria-pressed="false">Active</button>
+        <button class="filter" type="button" data-filter="done" aria-pressed="false">Done</button>
+      </div>
+    </div>
+
+    <ul id="todo-list" class="todo-list"></ul>
+
+    <p id="empty-state" class="empty-state">
+      Nothing here yet — add your first todo above.
+    </p>
+
+    <div class="app__footer">
+      <button id="clear-completed" class="btn btn--quiet" type="button">Clear completed</button>
+    </div>
+
+  </div>
+
+  <script type="module" src="./src/ui.js"></script>
+</body>
+</html>

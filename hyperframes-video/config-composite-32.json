@@ -1,0 +1,24 @@
+{
+  "dir": "composite-32-shortfall-reconcile",
+  "videoFile": "32-delivery-shortfall-reconcile.mp4",
+  "videoId": "composite-32-recording",
+  "rawDuration": 37.8,
+  "titleKicker": "Jayshankar · Tutorial",
+  "titleBrand": "A Delivery, Short",
+  "titleTag": "In transit, confirmed at the door, and settled with the vendor by hand.",
+  "headerKicker": "Tutorial · In-Transit & Reconciliation",
+  "headerHeadline": "A Delivery, Short",
+  "captions": [
+    { "text": "Rep logs it as \"in transit\" — not at the warehouse yet", "start": 2.5, "dur": 4.0 },
+    { "text": "Pick the vendor and the fish, kg promised", "start": 6.5, "dur": 4.5 },
+    { "text": "Submitted — on its way", "start": 11.0, "dur": 3.5 },
+    { "text": "Admin signs in to receive it at the door", "start": 14.5, "dur": 4.0 },
+    { "text": "Confirm arrivals — what's still in transit", "start": 18.5, "dur": 4.0 },
+    { "text": "Measure what actually arrived: good kg, spoiled kg", "start": 22.5, "dur": 7.0 },
+    { "text": "Short of what was promised — flagged for reconciliation", "start": 29.5, "dur": 3.5 },
+    { "text": "Reconcile the bill by hand with the vendor", "start": 33.0, "dur": 4.0 },
+    { "text": "Settled — physical stock and the bill stay separate, on purpose", "start": 37.0, "dur": 3.3 }
+  ],
+  "closeBrand": "Jayshankar",
+  "closeTag": "What's on the shelf is what was measured — what's owed is a conversation with the vendor."
+}

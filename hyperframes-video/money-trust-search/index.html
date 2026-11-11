@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0b1120; }
+      body { font-family: "Inter", sans-serif; }
+      .clip { position: absolute; inset: 0; }
+      .inner { position: absolute; inset: 0; }
+      #bg {
+        background:
+          radial-gradient(1200px 700px at 18% 10%, rgba(99,102,241,0.35), transparent 60%),
+          radial-gradient(1000px 900px at 85% 90%, rgba(56,189,248,0.16), transparent 55%),
+          linear-gradient(160deg, #0b1120 0%, #10172a 55%, #0b1120 100%);
+      }
+      .browser-frame {
+        position: absolute; left: 50%; top: 300px; transform: translateX(-50%);
+        width: 1200px; border-radius: 18px; overflow: hidden;
+        box-shadow: 0 40px 90px -20px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06);
+        background: #e5e7eb;
+      }
+      .browser-frame .chrome { height: 34px; background: #f1f5f9; display: flex; align-items: center; gap: 7px; padding: 0 14px; border-bottom: 1px solid #e2e8f0; }
+      .browser-frame .chrome span { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+      .browser-frame .chrome span:nth-child(1) { background: #f87171; }
+      .browser-frame .chrome span:nth-child(2) { background: #fbbf24; }
+      .browser-frame .chrome span:nth-child(3) { background: #34d399; }
+      .browser-frame img { display: block; width: 1200px; height: auto; }
+      .kicker { position: absolute; left: 160px; top: 96px; font-size: 22px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #a5b4fc; }
+      .headline { position: absolute; left: 160px; top: 130px; font-size: 46px; font-weight: 800; color: #f8fafc; max-width: 1400px; line-height: 1.15; }
+      .subline { position: absolute; left: 160px; top: 200px; font-size: 22px; font-weight: 500; color: #cbd5e1; max-width: 1300px; }
+      .titlecard { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+      .titlecard .brand { font-size: 96px; font-weight: 800; color: #f8fafc; letter-spacing: -0.02em; }
+      .titlecard .subtitle { font-size: 40px; font-weight: 700; color: #a5b4fc; margin-top: 10px; }
+      .titlecard .tag { font-size: 28px; font-weight: 500; color: #cbd5e1; margin-top: 22px; max-width: 1200px; }
+      .titlecard .chip-row { display: flex; gap: 14px; margin-top: 46px; flex-wrap: wrap; justify-content: center; max-width: 1400px; }
+      .titlecard .chip { font-size: 18px; font-weight: 700; color: #eef2ff; border: 1px solid rgba(165,180,252,0.5); border-radius: 999px; padding: 10px 22px; background: rgba(49,46,129,0.85); }
+      .closecard .brand { font-size: 76px; font-weight: 800; color: #f8fafc; }
+      .closecard .tag { font-size: 26px; font-weight: 500; color: #a5b4fc; margin-top: 18px; max-width: 1100px; text-align: center; line-height: 1.5; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="41.4" data-width="1920" data-height="1080">
+
+      <div id="bg" class="clip" data-start="0" data-duration="41.4" data-track-index="0"></div>
+
+      <!-- 1. Title card -->
+      <div id="s-title" class="clip" data-start="0" data-duration="3.4" data-track-index="1"><div class="inner titlecard">
+        <div class="brand">Jayshankar</div>
+        <div class="subtitle">Money, Trust &amp; Search</div>
+        <div class="tag">What's owed, what went wrong, and finding anything in seconds</div>
+        <div class="chip-row">
+          <div class="chip">Customers</div>
+          <div class="chip">Payments</div>
+          <div class="chip">Returns</div>
+          <div class="chip">Search</div>
+        </div>
+      </div></div>
+
+      <!-- 2. Every buyer, tracked -->
+      <div id="s-0" class="clip" data-start="3.40" data-duration="3.6" data-track-index="1"><div class="inner">
+        <div class="kicker">Customers</div>
+        <div class="headline">Every buyer, tracked</div>
+        <div class="subline">Credit limit, follow-up status, GST fields waiting for when they're needed.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/31-customers.png" /></div>
+      </div></div>
+
+      <!-- 3. What they owe, and settling it -->
+      <div id="s-1" class="clip" data-start="7.00" data-duration="4" data-track-index="1"><div class="inner">
+        <div class="kicker">Payments</div>
+        <div class="headline">What they owe, and settling it</div>
+        <div class="subline">Per-sale balances, computed live — never a second source of truth to drift out of sync.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/32b-payments-customer.png" /></div>
+      </div></div>
+
+      <!-- 4. Returns, handled fairly -->
+      <div id="s-2" class="clip" data-start="11.00" data-duration="3.8" data-track-index="1"><div class="inner">
+        <div class="kicker">Complaints</div>
+        <div class="headline">Returns, handled fairly</div>
+        <div class="subline">Genuine, false, or partial — each handled differently, and the false-claim option is real.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/06b-complaints.png" /></div>
+      </div></div>
+
+      <!-- 5. Share a bill, your way -->
+      <div id="s-3" class="clip" data-start="14.80" data-duration="4" data-track-index="1"><div class="inner">
+        <div class="kicker">Sharing</div>
+        <div class="headline">Share a bill, your way</div>
+        <div class="subline">Editable message, optional picture, prices shown or hidden — nothing sent without you.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/33-bill-whatsapp-share.png" /></div>
+      </div></div>
+
+      <!-- 6. Every credit bill, resolved -->
+      <div id="s-4" class="clip" data-start="18.80" data-duration="3.8" data-track-index="1"><div class="inner">
+        <div class="kicker">Reconciliation</div>
+        <div class="headline">Every credit bill, resolved</div>
+        <div class="subline">Settle now, or defer with a reminder — nothing just sits there forgotten.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/34-bill-reconcile-panel.png" /></div>
+      </div></div>
+
+      <!-- 7. Find a fish's full history -->
+      <div id="s-5" class="clip" data-start="22.60" data-duration="3.6" data-track-index="1"><div class="inner">
+        <div class="kicker">Search</div>
+        <div class="headline">Find a fish's full history</div>
+        <div class="subline">Current stock oldest-first, and every purchase behind it.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/36-fish-card.png" /></div>
+      </div></div>
+
+      <!-- 8. ...or a customer's -->
+      <div id="s-6" class="clip" data-start="26.20" data-duration="3.4" data-track-index="1"><div class="inner">
+        <div class="kicker">Search</div>
+        <div class="headline">...or a customer's</div>
+        <div class="subline">Balance and full sale-by-sale trace, in one look.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/38-customer-card.png" /></div>
+      </div></div>
+
+      <!-- 9. ...or a vendor's -->
+      <div id="s-7" class="clip" data-start="29.60" data-duration="3.8" data-track-index="1"><div class="inner">
+        <div class="kicker">Search</div>
+        <div class="headline">...or a vendor's</div>
+        <div class="subline">What's owed to them, a ready-to-send message, their most-sold fish.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/40-vendor-card.png" /></div>
+      </div></div>
+
+      <!-- 10. ...or a teammate's -->
+      <div id="s-8" class="clip" data-start="33.40" data-duration="3.4" data-track-index="1"><div class="inner">
+        <div class="kicker">Search</div>
+        <div class="headline">...or a teammate's</div>
+        <div class="subline">Real activity, honestly scoped to what's actually been built.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/42-employee-card.png" /></div>
+      </div></div>
+
+      <!-- Close card -->
+      <div id="s-close" class="clip" data-start="36.80" data-duration="4.6" data-track-index="1"><div class="inner closecard" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+        <div class="brand">Jayshankar</div>
+        <div class="tag">Every rupee traced. Every claim reviewed. Everything findable.</div>
+      </div></div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      function fadeScene(id, start, dur) {
+        const inD = 0.5, outD = 0.5;
+        tl.fromTo('#' + id + ' .inner', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: inD, ease: 'power2.out' }, start);
+        tl.to('#' + id + ' .inner', { autoAlpha: 0, y: -12, duration: outD, ease: 'power2.in' }, start + dur - outD);
+        tl.set('#' + id + ' .inner', { autoAlpha: 0 }, start + dur);
+      }
+      function fadeFrame(id, start) {
+        tl.fromTo('#' + id + ' .browser-frame', { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'power3.out' }, start + 0.15);
+      }
+
+      tl.fromTo('#s-title .brand', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.1);
+      tl.fromTo('#s-title .subtitle', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.45);
+      tl.fromTo('#s-title .tag', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.75);
+      tl.fromTo('#s-title .chip', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power2.out' }, 1.05);
+      tl.to('#s-title .inner', { autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 2.90);
+      tl.set('#s-title .inner', { autoAlpha: 0 }, 3.4);
+
+      fadeScene('s-0', 3.40, 3.6); fadeFrame('s-0', 3.40);
+      fadeScene('s-1', 7.00, 4); fadeFrame('s-1', 7.00);
+      fadeScene('s-2', 11.00, 3.8); fadeFrame('s-2', 11.00);
+      fadeScene('s-3', 14.80, 4); fadeFrame('s-3', 14.80);
+      fadeScene('s-4', 18.80, 3.8); fadeFrame('s-4', 18.80);
+      fadeScene('s-5', 22.60, 3.6); fadeFrame('s-5', 22.60);
+      fadeScene('s-6', 26.20, 3.4); fadeFrame('s-6', 26.20);
+      fadeScene('s-7', 29.60, 3.8); fadeFrame('s-7', 29.60);
+      fadeScene('s-8', 33.40, 3.4); fadeFrame('s-8', 33.40);
+
+      tl.fromTo('#s-close .brand', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 37.00);
+      tl.fromTo('#s-close .tag', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 37.50);
+
+      window.__timelines['main'] = tl;
+    </script>
+  </body>
+</html>

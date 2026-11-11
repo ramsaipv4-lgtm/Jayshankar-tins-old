@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tins-kit/schemas/tins-markers.schema.json",
+  "title": "TINS markers",
+  "description": "The canonical marker block every TINS consumer must include at the top of its SPEC.md, BUILDER-DECISIONS-REVIEW.md, and REVIEWER-DECISIONS-REVIEW.md. Validated by the kit's validate.mjs §8.1.",
+  "type": "object",
+  "required": ["tins_version", "kit_version", "consumer", "kind"],
+  "additionalProperties": false,
+  "properties": {
+    "tins_version": {
+      "description": "The TINS methodology version this consumer follows (semver, e.g. 1.0.0).",
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "kit_version": {
+      "description": "The tins-kit version this consumer was built against (semver). The consumer's selftest can check this against the kit's current version to detect drift.",
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "consumer": {
+      "description": "The consumer's identity.",
+      "type": "object",
+      "required": ["name", "path"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The consumer's human-readable name (e.g. 'atal-incubation', 'Jayshankar').",
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "description": "The consumer's repo path relative to the kit root (e.g. '../atal-incubation/').",
+          "type": "string"
+        }
+      }
+    },
+    "kind": {
+      "description": "The kind of file this marker is embedded in.",
+      "type": "string",
+      "enum": ["SPEC.md", "BUILDER-DECISIONS-REVIEW.md", "REVIEWER-DECISIONS-REVIEW.md", "AGENTS.md", "HANDOVER.md"]
+    },
+    "as_of": {
+      "description": "The date this marker block was last updated (ISO 8601 date).",
+      "type": "string",
+      "format": "date"
+    },
+    "patterns_in_use": {
+      "description": "The list of kit patterns this consumer has adopted. Validated against the kit's `ls lib/patterns/`. Any pattern in this list must exist in the kit; any pattern the consumer is using but not in this list is flagged.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+\\.md$"
+      }
+    },
+    "modules_in_use": {
+      "description": "The list of kit lib modules this consumer has adopted.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["no-backend", "money-as-decimal", "tenant-rls", "audit-viewer", "docs-guardian", "pwa-config", "auth-shell"]
+      }
+    }
+  }
+}

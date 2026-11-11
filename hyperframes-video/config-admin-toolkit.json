@@ -1,0 +1,20 @@
+{
+  "outFile": "admin-toolkit/index.html",
+  "title": "Admin & Setup",
+  "tagline": "Everything a wholesaler configures once, then rarely touches again",
+  "chips": ["Fish types", "Warehouses", "Vendors", "Team", "Tasks"],
+  "closeTag": "Set it up once. The rest of the app just runs on top of it.",
+  "scenes": [
+    { "image": "20-skus-list.png", "duration": 3.6, "kicker": "Fish types", "headline": "Every fish, catalogued", "subline": "Category, size grade, shelf life, storage type — one place, editable by admin." },
+    { "image": "21-sku-form.png", "duration": 3.6, "kicker": "Fish types", "headline": "Add a new one in seconds", "subline": "Name and size up front; the rest defaults sensibly and stays optional." },
+    { "image": "22-warehouses.png", "duration": 3.4, "kicker": "Warehouses", "headline": "Ready to grow beyond one site", "subline": "Add a warehouse any time — its in-transit locations are created automatically." },
+    { "image": "23-vendors-list.png", "duration": 3.4, "kicker": "Vendors", "headline": "Every fisherman, one screen", "subline": "Phone, port, typical catch, reliability — the people stock actually comes from." },
+    { "image": "24-vendor-form.png", "duration": 3.6, "kicker": "Vendors", "headline": "Onboard a new one directly", "subline": "No more falling back to raw SQL to add a vendor the app didn't know about." },
+    { "image": "25-team-list.png", "duration": 3.4, "kicker": "Team", "headline": "Your whole team, one screen", "subline": "Role labels that describe the job, not the database column." },
+    { "image": "26b-team-edit-self-admin.png", "duration": 4, "kicker": "Team", "headline": "Roles — and who can self-approve", "subline": "Only admin/co-admin can ever skip the review step on their own reversals." },
+    { "image": "27-audit-log.png", "duration": 3.4, "kicker": "Audit log", "headline": "Every change, logged", "subline": "Who changed what, and when — nothing silently overwritten." },
+    { "image": "28-task-delegation.png", "duration": 4, "kicker": "Tasks", "headline": "Assign by hand, or let it balance the load", "subline": "Round-robin picks whoever's least busy — and reassigns automatically if a role ever changes." },
+    { "image": "29-transfer-form.png", "duration": 3.8, "kicker": "Transfer", "headline": "Move stock between warehouses", "subline": "Cross-warehouse only — moving stock within one site is a repack, not a transfer." },
+    { "image": "30-spoilage-form.png", "duration": 3.4, "kicker": "Spoilage", "headline": "Record a loss honestly", "subline": "Every kg written off is tracked, not quietly subtracted." }
+  ]
+}

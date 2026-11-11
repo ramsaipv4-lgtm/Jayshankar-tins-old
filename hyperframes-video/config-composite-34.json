@@ -1,0 +1,23 @@
+{
+  "dir": "composite-34-correction-execute",
+  "videoFile": "34-correction-approve-execute.mp4",
+  "videoId": "composite-34-recording",
+  "rawDuration": 35.2,
+  "titleKicker": "Jayshankar · Tutorial",
+  "titleBrand": "Undo a Sale, Properly",
+  "titleTag": "A rep requests it, an admin signs off — stock and money both undone together.",
+  "headerKicker": "Tutorial · Reversals",
+  "headerHeadline": "Undo a Sale, Properly",
+  "captions": [
+    { "text": "Sign in, deliver a batch", "start": 2.5, "dur": 3.5 },
+    { "text": "Sell it to a customer", "start": 6.0, "dur": 6.0 },
+    { "text": "Recorded. But the customer changes their mind", "start": 12.0, "dur": 4.0 },
+    { "text": "Reversals — request one against that sale", "start": 16.0, "dur": 4.0 },
+    { "text": "State the reason and submit", "start": 20.0, "dur": 4.0 },
+    { "text": "Requested — it needs an admin's say-so first", "start": 24.0, "dur": 4.0 },
+    { "text": "Admin reviews and approves", "start": 28.0, "dur": 3.5 },
+    { "text": "Execute — the reversal actually happens, stock and money both undone", "start": 31.5, "dur": 6.2 }
+  ],
+  "closeBrand": "Jayshankar",
+  "closeTag": "No one reverses their own sale unsupervised — a second person always signs off."
+}

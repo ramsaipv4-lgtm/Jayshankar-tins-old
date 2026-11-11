@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tins-kit/schemas/tins-spec-minimal.schema.json",
+  "title": "TINS SPEC.md (minimal viable shape)",
+  "description": "The minimum viable structure a TINS consumer's SPEC.md must satisfy. The full spec can have more sections, but the ones listed here are required. Validated by the kit's validate.mjs §8.1.",
+  "type": "object",
+  "required": ["sections"],
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "description": "The spec's title (the H1 of SPEC.md).",
+      "type": "string",
+      "minLength": 1
+    },
+    "predecessor_documents": {
+      "description": "List of predecessor docs (e.g. 'archive/SPEC-v1.md'). The §0.0 footer.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "what_i_guessed": {
+      "description": "The §0.3 'What I guessed' appendix. Each entry is an assumption the spec author made that the user should verify before implementation starts.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["guess", "based_on"],
+        "additionalProperties": false,
+        "properties": {
+          "guess": { "type": "string" },
+          "based_on": { "type": "string" },
+          "verify_with": { "type": "string" }
+        }
+      }
+    },
+    "sections": {
+      "description": "The required sections. Each must be present (can be 'see <other file>' as a stub).",
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["id", "title"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": ["§0", "§1", "§2", "§4", "§8", "§9"]
+          },
+          "title": { "type": "string" },
+          "present": {
+            "type": "boolean",
+            "description": "Whether the section is present in the SPEC.md (vs. referenced from elsewhere)."
+          }
+        }
+      }
+    },
+    "acceptance_criteria": {
+      "description": "The §8 acceptance criteria. Each must be runnable (a command, a curl, a test, or a 'see file X' reference).",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "criterion"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^§8\\.[0-9]+$"
+          },
+          "criterion": { "type": "string" },
+          "how_to_verify": { "type": "string" }
+        }
+      }
+    },
+    "out_of_scope": {
+      "description": "The §9 out-of-scope list. Each entry is something explicitly NOT built in v1.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["item", "why_out"],
+        "additionalProperties": false,
+        "properties": {
+          "item": { "type": "string" },
+          "why_out": { "type": "string" },
+          "revisit_when": { "type": "string" }
+        }
+      }
+    }
+  }
+}

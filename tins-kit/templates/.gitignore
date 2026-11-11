@@ -1,0 +1,89 @@
+# templates/.gitignore
+#
+# The kit's recommended `.gitignore`. Copy this file to your consumer's root
+# as `.gitignore` and extend as needed for project-specific generated files.
+#
+# THE 9 MUST-IGNORE CATEGORIES:
+#   1. Build outputs (node_modules, .next, .turbo, build, dist, out)
+#   2. Env files (.env, .env.local, .env.*.local)
+#   3. Logs (*.log, npm-debug.log, pnpm-debug.log)
+#   4. OS / editor (.DS_Store, Thumbs.db, .vscode, .idea)
+#   5. Test artefacts (coverage, .nyc_output)
+#   6. Generated / embedded (project-specific)
+#   7. TypeScript build info (*.tsbuildinfo)
+#   8. Next.js / Vite specific
+#   9. Database local files (*.db, *.sqlite)
+
+# 1. Build outputs
+node_modules/
+.next/
+.turbo/
+build/
+dist/
+out/
+target/        # Rust
+bin/           # Go
+
+# 2. Env files (CRITICAL: never commit secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+!.env.example   # the template is allowed
+
+# 3. Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 4. OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 5. Test artefacts
+coverage/
+.nyc_output/
+*.lcov
+junit.xml
+
+# 6. Generated / embedded (project-specific — add your own below)
+# Example for Data-cleaning-script:
+# /CleanStation.exe
+# Example for atal-incubation:
+# /uploads/
+# /prisma/migrations_applied.json
+
+# 7. TypeScript build info
+*.tsbuildinfo
+next-env.d.ts
+
+# 8. Next.js / Vite specific
+# .next/ is in #1
+.vite/
+.cache/
+
+# 9. Database local files
+*.db
+*.sqlite
+*.sqlite3
+
+# 10. Docker
+.dockerignore~
+
+# 11. OS temp
+.tmp/
+tmp/
+
+# 12. Lock files (only if your project uses a custom one)
+# package-lock.json
+# pnpm-lock.yaml
+# yarn.lock

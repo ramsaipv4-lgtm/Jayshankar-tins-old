@@ -1,0 +1,9 @@
+{
+  "shell": true,
+  "kitVersion": "2.0",
+  "kitSource": "C:\\Users\\user\\Desktop\\TINS-projects\\atal-incubation\\tins-kit",
+  "createdAt": "2026-08-16T09:45:00.000Z",
+  "project": "text-extractor-from-html",
+  "instructions": "See .kit-shell/prompts/NEW-PROJECT.md for the workflow. When done, run `node .kit-shell/scripts/kit-staging-export.mjs` to produce a tarball for transport to the kit machine.",
+  "note": "This .kit-shell/ was hand-assembled, not produced by kit-new-project-shell.mjs, because that scaffolder only creates NEW project directories (errors if target exists) and this project already existed. kit-staging-export.mjs was added manually because kit-new-project-shell.mjs's shellFiles list omits it (a real bug, reported separately)."
+}

@@ -1,0 +1,264 @@
+<!doctype html>
+<!--
+Direction B · Pack container form · stripe-linear, premium dashboard.
+Inter at 300/510. Indigo accent stays #533afd. Sticky submit bar same shape as Direction A
+but with the B-style chrome — narrower radii (6px), tabular numerals.
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Direction B · Pack container form · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;510;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg-page:#ffffff;
+  --bg-card:#ffffff;
+  --bg-card-soft:#f6f7f9;
+  --bg-hero:#0f1011;
+  --text-0:#061b31;
+  --text-1:#525c6a;
+  --text-2:#8a93a3;
+  --accent:#533afd;
+  --accent-hover:#4434d4;
+  --accent-soft:rgba(83,58,253,0.08);
+  --border-0:#e5edf5;
+  --border-1:#eef2f7;
+  --success:#15be53;
+  --r-xs:4px; --r-sm:6px; --r-md:12px; --r-lg:16px; --r-pill:9999px;
+  --heading-weight:300; --emphasis-weight:510;
+  --shadow-stripe:rgba(50,50,93,0.25) 0 30px 45px -30px, rgba(0,0,0,0.10) 0 18px 36px -18px;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg-page); color:var(--text-0); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+body { font-size:16px; line-height:1.5; }
+
+.shell { display:flex; flex-direction:column; min-height:100vh; padding-bottom:env(safe-area-inset-bottom,0px); }
+.topnav { display:flex; align-items:center; gap:14px; padding:14px 20px; background:var(--bg-page); border-bottom:1px solid var(--border-0); position:sticky; top:0; z-index:10; }
+.brand { font-weight:600; font-size:17px; letter-spacing:-0.01em; }
+.brand .accent { color:var(--accent); }
+.backbtn { width:36px; height:36px; border-radius:var(--r-sm); border:1px solid var(--border-0); background:transparent; color:var(--text-1); display:inline-flex; align-items:center; justify-content:center; }
+.spacer { flex:1; }
+
+.page-title { padding:24px 20px 4px; max-width:1280px; margin:0 auto; width:100%; }
+.page-title h1 { font-size:24px; font-weight:var(--heading-weight); letter-spacing:-0.5px; margin:0 0 4px; color:var(--text-0); }
+.page-title .sub { font-size:13px; color:var(--text-1); font-variant-numeric:tabular-nums; }
+
+main { padding:8px 20px 96px; max-width:1280px; margin:0 auto; width:100%; }
+section { background:var(--bg-card); border:1px solid var(--border-0); border-radius:var(--r-md); padding:24px; margin-bottom:14px; }
+h2 { font-size:13px; font-weight:var(--emphasis-weight); text-transform:uppercase; letter-spacing:1.0px; color:var(--text-2); margin:0 0 14px; }
+
+.field { display:flex; flex-direction:column; gap:6px; margin-bottom:14px; }
+.field label { font-size:13px; font-weight:var(--emphasis-weight); color:var(--text-0); }
+.field .help { font-size:12px; color:var(--text-2); }
+input[type="text"], input[type="number"] {
+  font:inherit; font-size:16px;
+  height:44px; padding:0 14px;
+  border-radius:var(--r-sm); border:1px solid var(--border-0);
+  background:var(--bg-card); color:var(--text-0); font-variant-numeric:tabular-nums;
+}
+input[type="text"]:focus, input[type="number"]:focus { outline:2px solid var(--accent); outline-offset:2px; border-color:var(--accent); }
+
+.picker {
+  position:relative;
+  display:flex; align-items:center; justify-content:space-between;
+  height:44px; padding:0 14px;
+  border-radius:var(--r-sm); border:1px solid var(--border-0);
+  background:var(--bg-card); color:var(--text-0);
+  font-size:16px; cursor:pointer;
+}
+.picker:focus-within { outline:2px solid var(--accent); outline-offset:2px; border-color:var(--accent); }
+.picker .value { color:var(--text-0); }
+.picker .chev { color:var(--text-2); }
+
+.line-list { display:flex; flex-direction:column; gap:8px; }
+.line-card {
+  background:var(--bg-card-soft); border-radius:var(--r-sm);
+  padding:14px;
+}
+.line-card .top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
+.line-card .fish { font-weight:var(--emphasis-weight); color:var(--text-0); font-size:15px; letter-spacing:-0.2px; }
+.line-card .vendor { font-size:12px; color:var(--text-2); }
+.line-card .linenum { font-size:11px; color:var(--text-2); text-transform:uppercase; letter-spacing:1.0px; font-weight:var(--emphasis-weight); }
+.line-card .meta { display:flex; gap:18px; margin:8px 0 10px; }
+.line-card .meta > div { flex:1; }
+.line-card .meta-label { font-size:11px; color:var(--text-2); text-transform:uppercase; letter-spacing:1.0px; font-weight:var(--emphasis-weight); margin-bottom:4px; }
+.line-card .meta-value { font-size:18px; font-weight:var(--heading-weight); color:var(--text-0); font-variant-numeric:tabular-nums; letter-spacing:-0.5px; }
+.line-card .kg-input {
+  font:inherit; font-size:16px;
+  height:44px; padding:0 14px;
+  border-radius:var(--r-sm); border:1px solid var(--border-0);
+  background:var(--bg-card); color:var(--text-0); width:100%; font-variant-numeric:tabular-nums;
+}
+.line-card .kg-input:focus { outline:2px solid var(--accent); outline-offset:2px; border-color:var(--accent); }
+
+.submit-row { margin-top:24px; padding-top:20px; border-top:1px solid var(--border-1); display:flex; flex-direction:column; gap:12px; align-items:stretch; }
+.submit-row .totals { font-size:13px; color:var(--text-1); text-align:center; font-variant-numeric:tabular-nums; }
+.submit-row .totals strong { color:var(--text-0); font-weight:var(--emphasis-weight); }
+button.primary {
+  font:inherit; font-size:15px; font-weight:var(--emphasis-weight);
+  height:48px; border-radius:var(--r-sm); border:0;
+  background:var(--accent); color:#fff; cursor:pointer; letter-spacing:-0.2px;
+}
+button.primary:hover { background:var(--accent-hover); }
+button.secondary {
+  font:inherit; font-size:14px; font-weight:var(--emphasis-weight);
+  height:44px; border-radius:var(--r-sm); background:transparent;
+  color:var(--text-1); border:1px solid var(--border-0); cursor:pointer;
+}
+
+@media (max-width:759px) {
+  .submit-row {
+    position:fixed; left:0; right:0; bottom:0;
+    background:var(--bg-card); border-top:1px solid var(--border-0);
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));
+    margin:0;
+    z-index:8;
+  }
+  .submit-row .secondary { display:none; }
+}
+@media (min-width:760px) {
+  .line-card { display:grid; grid-template-columns:1.4fr 1fr 140px; align-items:end; gap:16px; padding:14px 18px; }
+  .line-card .top { grid-column:1 / -1; margin-bottom:0; }
+  .line-card .meta { margin:0; }
+  main { padding:8px 32px 96px; }
+  .page-title { padding:32px 32px 4px; }
+  .submit-row { flex-direction:row; align-items:center; justify-content:space-between; }
+  .submit-row button.primary { width:auto; padding:0 32px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="topnav">
+    <a href="B1-rep-dashboard.html" class="backbtn" aria-label="Back to rep dashboard">←</a>
+    <div class="brand">Jayshankar<span class="accent">.</span></div>
+    <div class="spacer"></div>
+    <button class="backbtn" aria-label="Sign out">⎋</button>
+  </header>
+
+  <div class="page-title">
+    <h1>Pack a container</h1>
+    <p class="sub">Bill #DEMO-004 · Muthu (Selvam) · 14 Sep, 09:18</p>
+  </div>
+
+  <main>
+    <section>
+      <h2>Bill</h2>
+      <div class="field">
+        <label for="bill-picker">Pick a bill to pack from</label>
+        <div class="picker" tabindex="0" role="combobox" aria-expanded="false" id="bill-picker">
+          <span class="value">DEMO-004 · 14 Sep · 12 lines · ₹42,300</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </div>
+        <span class="help">Only bills with at least one unpacked line are shown.</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Fish lines</h2>
+      <div class="line-list">
+        <div class="line-card">
+          <div class="top">
+            <div>
+              <div class="fish">Prawns · Large</div>
+              <div class="vendor">Muthu (Selvam)</div>
+            </div>
+            <span class="linenum">Line 01</span>
+          </div>
+          <div class="meta">
+            <div>
+              <div class="meta-label">Delivered</div>
+              <div class="meta-value">12.0</div>
+            </div>
+            <div>
+              <div class="meta-label">Available</div>
+              <div class="meta-value">10.5</div>
+            </div>
+          </div>
+          <div>
+            <label class="help" for="kg-1" style="display:block;margin-bottom:6px;">Pack kg</label>
+            <input id="kg-1" class="kg-input" type="number" min="0" max="10.5" step="0.1" value="8.0" inputmode="decimal" />
+          </div>
+        </div>
+
+        <div class="line-card">
+          <div class="top">
+            <div>
+              <div class="fish">Pomfret · Medium</div>
+              <div class="vendor">Muthu (Selvam)</div>
+            </div>
+            <span class="linenum">Line 02</span>
+          </div>
+          <div class="meta">
+            <div>
+              <div class="meta-label">Delivered</div>
+              <div class="meta-value">8.0</div>
+            </div>
+            <div>
+              <div class="meta-label">Available</div>
+              <div class="meta-value">8.0</div>
+            </div>
+          </div>
+          <div>
+            <label class="help" for="kg-2" style="display:block;margin-bottom:6px;">Pack kg</label>
+            <input id="kg-2" class="kg-input" type="number" min="0" max="8.0" step="0.1" value="0" inputmode="decimal" />
+          </div>
+        </div>
+
+        <div class="line-card">
+          <div class="top">
+            <div>
+              <div class="fish">Squid · Medium</div>
+              <div class="vendor">Muthu (Selvam)</div>
+            </div>
+            <span class="linenum">Line 03</span>
+          </div>
+          <div class="meta">
+            <div>
+              <div class="meta-label">Delivered</div>
+              <div class="meta-value">6.0</div>
+            </div>
+            <div>
+              <div class="meta-label">Available</div>
+              <div class="meta-value">6.0</div>
+            </div>
+          </div>
+          <div>
+            <label class="help" for="kg-3" style="display:block;margin-bottom:6px;">Pack kg</label>
+            <input id="kg-3" class="kg-input" type="number" min="0" max="6.0" step="0.1" value="0" inputmode="decimal" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Container</h2>
+      <div class="field">
+        <label for="container-number">Container number</label>
+        <input id="container-number" type="text" value="TC-DEMO-01" />
+        <span class="help">A new number registers the box; an existing number reuses it.</span>
+      </div>
+      <div class="field">
+        <label for="container-capacity">Capacity (kg)</label>
+        <div class="picker" tabindex="0" role="combobox" aria-expanded="false">
+          <span class="value">10 kg</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="submit-row">
+      <div class="totals">Total packed: <strong>8.0</strong> / 10 kg capacity</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="secondary">Save draft</button>
+        <button class="primary">Pack container</button>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

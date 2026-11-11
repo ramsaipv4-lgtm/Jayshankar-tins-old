@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tins-kit/schemas/locked-decisions.schema.json",
+  "title": "Locked decisions (§0.2)",
+  "description": "The structure of the §0.2 'Locked decisions' table in a TINS consumer's SPEC.md. Validated by the kit's validate.mjs §8.1.",
+  "type": "object",
+  "required": ["decisions"],
+  "additionalProperties": false,
+  "properties": {
+    "decisions": {
+      "description": "The list of locked decisions, in order (D1, D2, ...).",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "choice", "why"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "description": "The decision id (D1, D2, ...). Sequential, no gaps.",
+            "type": "string",
+            "pattern": "^D[0-9]+$"
+          },
+          "title": {
+            "description": "The one-line title of the decision.",
+            "type": "string",
+            "minLength": 1
+          },
+          "choice": {
+            "description": "The chosen option (e.g. 'Next.js 14', 'Postgres 16 + RLS', 'Decimal(18,4)').",
+            "type": "string",
+            "minLength": 1
+          },
+          "why": {
+            "description": "The 1–2 sentence rationale. Must be specific (e.g. 'because X library doesn't support Y', not 'because it's better').",
+            "type": "string",
+            "minLength": 1
+          },
+          "alternatives_considered": {
+            "description": "Optional: the alternatives the spec author considered and rejected.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "revisit_when": {
+            "description": "Optional: the trigger that would cause this decision to be re-opened (e.g. 'when X library reaches 1.0', 'when the project exceeds 100 tenants').",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

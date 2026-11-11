@@ -1,0 +1,341 @@
+<!doctype html>
+<!--
+Direction A · Rep dashboard · sortly-notion, light, content-first, hamburger + bottom-tab.
+Self-contained. No external assets. Inter via Google Fonts CDN.
+Per the spec design-system-draft-2026-09-16.md §3 (Nav + Card components).
+The exercise: 10 rep action tiles + section rhythm + sticky bottom-tab on phone,
+4-col tile grid on desktop. Real component shapes from the draft. No marketing copy.
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Direction A · Rep dashboard · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root, [data-theme="light"] {
+  --bg-0:#f6f5f4;       /* warm cream page bg, Notion-style */
+  --bg-1:#ffffff;       /* card */
+  --bg-2:#ffffff;
+  --bg-3:#faf9f7;       /* hover */
+  --text-0:#37352f;     /* warm dark, Notion near-black */
+  --text-1:#615d59;
+  --text-2:#a39e98;
+  --accent:#4f46e5;     /* preserved indigo brand */
+  --accent-hover:#4338ca;
+  --border-0:#e8e6e1;   /* warm parchment border */
+  --border-1:#f0eee9;
+  --success:#108c3d;
+  --success-bg:#dcfce7;
+  --warning-bg:#fef3c7;
+  --warning:#92400e;
+  --danger-bg:#fee2e2;
+  --danger:#991b1b;
+  --shadow-1:0 1px 2px rgba(15,23,42,.04);
+  --shadow-2:0 2px 6px rgba(15,23,42,.05),0 4px 14px rgba(15,23,42,.03);
+  --shadow-3:0 8px 24px rgba(15,23,42,.08);
+  --r-xs:4px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-pill:9999px;
+  --space-xs:4px; --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:24px; --space-2xl:32px;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg-0); color:var(--text-0); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+body { font-size:16px; line-height:1.5; }
+
+/* Layout */
+.shell { display:flex; flex-direction:column; min-height:100vh; }
+.topnav {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 20px; background:var(--bg-1);
+  border-bottom:1px solid var(--border-1);
+  position:sticky; top:0; z-index:10;
+}
+.brand { font-weight:700; font-size:18px; letter-spacing:-0.01em; color:var(--text-0); }
+.brand .accent { color:var(--accent); }
+.navspacer { flex:1; }
+.iconbtn {
+  width:36px; height:36px; border-radius:var(--r-sm); border:1px solid var(--border-0); background:transparent; display:inline-flex; align-items:center; justify-content:center;
+  color:var(--text-1); cursor:pointer;
+}
+.iconbtn:hover { background:var(--bg-3); }
+.role-badge {
+  font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase;
+  padding:4px 10px; border-radius:var(--r-pill);
+  background:rgba(79,70,229,0.08); color:var(--accent);
+  border:1px solid rgba(79,70,229,0.16);
+}
+.bell { position:relative; }
+.bell-dot { position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:#dc2626; border:2px solid var(--bg-1); }
+
+/* Sections (alternating rhythm, Notion-style) */
+main { flex:1; padding:24px 20px calc(96px + env(safe-area-inset-bottom,0px)) 20px; max-width:1280px; margin:0 auto; width:100%; }
+section { background:var(--bg-1); border:1px solid var(--border-0); border-radius:var(--r-md); padding:20px; margin-bottom:16px; }
+section.alt { background:#fafaf8; }
+h2 { font-size:18px; font-weight:600; letter-spacing:-0.01em; margin:0 0 4px; color:var(--text-0); }
+.section-sub { font-size:13px; color:var(--text-1); margin-bottom:16px; }
+
+/* KPI strip */
+.kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:8px; }
+.kpi { background:var(--bg-1); border:1px solid var(--border-0); border-radius:var(--r-md); padding:14px; }
+.kpi .label { font-size:12px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.06em; font-weight:600; }
+.kpi .value { font-size:28px; font-weight:700; letter-spacing:-0.02em; color:var(--text-0); margin-top:4px; line-height:1.1; }
+.kpi .delta { font-size:12px; color:var(--success); margin-top:4px; }
+.kpi .delta.neg { color:var(--danger); }
+
+/* Action grid (the key shape decision) */
+.action-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.action-tile {
+  background:var(--bg-1);
+  border:1px solid var(--border-0);
+  border-radius:var(--r-md);
+  padding:14px;
+  min-height:88px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  text-decoration:none; color:inherit;
+  cursor:pointer;
+}
+.action-tile:hover { background:var(--bg-3); border-color:var(--accent); }
+.action-tile .ico {
+  width:32px; height:32px; border-radius:var(--r-sm);
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(79,70,229,0.10); color:var(--accent);
+  font-size:18px;
+}
+.action-tile .label { font-size:14px; font-weight:600; color:var(--text-0); line-height:1.25; margin-top:8px; }
+.action-tile .sub { font-size:12px; color:var(--text-2); line-height:1.25; margin-top:2px; }
+.action-tile.primary .ico { background:var(--accent); color:#fff; }
+.action-tile.primary { background:linear-gradient(180deg,rgba(79,70,229,0.05),transparent); border-color:rgba(79,70,229,0.20); }
+
+/* Recent activity */
+.activity-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border-1); }
+.activity-row:last-child { border-bottom:none; }
+.activity-row .dot { width:8px; height:8px; border-radius:50%; background:var(--text-2); flex-shrink:0; }
+.activity-row .dot.sale { background:var(--success); }
+.activity-row .dot.delivery { background:var(--accent); }
+.activity-row .meta { font-size:13px; color:var(--text-1); flex:1; }
+.activity-row .when { font-size:12px; color:var(--text-2); }
+
+/* Bottom tab nav (phone only) */
+.bottomnav {
+  display:none;
+  position:fixed; left:0; right:0; bottom:0;
+  background:var(--bg-1); border-top:1px solid var(--border-0);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  z-index:9;
+}
+.bottomnav ul { list-style:none; margin:0; padding:6px 8px; display:grid; grid-template-columns:repeat(4,1fr); }
+.bottomnav li a {
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  padding:8px 4px; text-decoration:none; color:var(--text-2);
+  font-size:11px; font-weight:500;
+  border-top:2px solid transparent;
+}
+.bottomnav li a[aria-current="page"] { color:var(--accent); border-top-color:var(--accent); }
+.bottomnav li a .ico { font-size:20px; }
+
+/* Tablet + */
+@media (min-width:760px) {
+  .action-grid { grid-template-columns:repeat(4,1fr); }
+  .kpis { grid-template-columns:repeat(4,1fr); }
+}
+/* Desktop */
+@media (min-width:1024px) {
+  .topnav { padding:14px 32px; }
+  main { padding:32px 32px 32px 32px; }
+  .action-grid { grid-template-columns:repeat(5,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Top nav -->
+  <header class="topnav">
+    <button class="iconbtn" aria-label="Open menu"><span aria-hidden="true">≡</span></button>
+    <div class="brand">Jayshankar<span class="accent">.</span></div>
+    <div class="navspacer"></div>
+    <button class="iconbtn bell" aria-label="Notifications (3 unread)">
+      <span aria-hidden="true">🔔</span>
+      <span class="bell-dot" aria-hidden="true"></span>
+    </button>
+    <span class="role-badge">Receiving &amp; sales</span>
+    <button class="iconbtn" aria-label="Sign out"><span aria-hidden="true">⎋</span></button>
+  </header>
+
+  <main>
+    <!-- Greeting -->
+    <section>
+      <h2>Good morning, Karthik</h2>
+      <p class="section-sub">3 active tasks · Demo Warehouse (feature showcase)</p>
+    </section>
+
+    <!-- KPIs -->
+    <section class="alt">
+      <div class="kpis">
+        <div class="kpi">
+          <div class="label">Today's sales</div>
+          <div class="value">₹34,200</div>
+          <div class="delta">+12% vs yesterday</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Today's kg sold</div>
+          <div class="value">87.5</div>
+          <div class="delta">+8% vs yesterday</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Low stock SKUs</div>
+          <div class="value">2</div>
+          <div class="delta neg">Prawns, Squid</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Containers expiring</div>
+          <div class="value">4</div>
+          <div class="delta neg">Today / tomorrow</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Actions — the primary fix -->
+    <section>
+      <h2>Quick actions</h2>
+      <p class="section-sub">Every task you can do from this role, one tap away.</p>
+      <div class="action-grid">
+
+        <button class="action-tile primary">
+          <div class="ico">＋</div>
+          <div>
+            <div class="label">Record a delivery</div>
+            <div class="sub">Receive from fisherman</div>
+          </div>
+        </button>
+
+        <button class="action-tile primary">
+          <div class="ico">₹</div>
+          <div>
+            <div class="label">Record a sale</div>
+            <div class="sub">Haul to a buyer</div>
+          </div>
+        </button>
+
+        <button class="action-tile">
+          <div class="ico">▣</div>
+          <div>
+            <div class="label">Pack a container</div>
+            <div class="sub">Packing + QR</div>
+          </div>
+        </button>
+
+        <button class="action-tile">
+          <div class="ico">⇄</div>
+          <div>
+            <div class="label">Repack</div>
+            <div class="sub">Consolidate stock</div>
+          </div>
+        </button>
+
+        <button class="action-tile">
+          <div class="ico">⊘</div>
+          <div>
+            <div class="label">Record spoilage</div>
+            <div class="sub">Spoilt in warehouse</div>
+          </div>
+        </button>
+
+        <button class="action-tile">
+          <div class="ico">≡</div>
+          <div>
+            <div class="label">Bills</div>
+            <div class="sub">View &amp; reconcile</div>
+          </div>
+        </button>
+
+        <button class="action-tile">
+          <div class="ico">◎</div>
+          <div>
+            <div class="label">Customers</div>
+            <div class="sub">Credit &amp; balances</div>
+          </div>
+        </button>
+
+        <button class="action-tile">
+          <div class="ico">₹</div>
+          <div>
+            <div class="label">Payments</div>
+            <div class="sub">Record a payment</div>
+          </div>
+        </button>
+
+        <button class="action-tile">
+          <div class="ico">⟲</div>
+          <div>
+            <div class="label">Reversals</div>
+            <div class="sub">Request / approve</div>
+          </div>
+        </button>
+
+        <button class="action-tile">
+          <div class="ico">⊕</div>
+          <div>
+            <div class="label">Complaints</div>
+            <div class="sub">File / resolve</div>
+          </div>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- Recent activity -->
+    <section class="alt">
+      <h2>Recent activity</h2>
+      <p class="section-sub">Last few movements across the warehouse.</p>
+      <div class="activity-row">
+        <span class="dot sale"></span>
+        <span class="meta"><strong>Sale</strong> · 3.5kg Pomfret to Saravana Stores</span>
+        <span class="when">2m ago</span>
+      </div>
+      <div class="activity-row">
+        <span class="dot delivery"></span>
+        <span class="meta"><strong>Delivery</strong> · 12kg Prawns from Muthu (Selvam)</span>
+        <span class="when">11m ago</span>
+      </div>
+      <div class="activity-row">
+        <span class="dot sale"></span>
+        <span class="meta"><strong>Sale</strong> · 8kg Mackerel to Anand</span>
+        <span class="when">42m ago</span>
+      </div>
+      <div class="activity-row">
+        <span class="dot sale"></span>
+        <span class="meta"><strong>Sale</strong> · 2kg Squid to Coastal Kitchen</span>
+        <span class="when">1h ago</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom tab nav (phone only) -->
+  <nav class="bottomnav" aria-label="Primary">
+    <ul>
+      <li><a href="#" aria-current="page"><span class="ico" aria-hidden="true">▦</span><span>Home</span></a></li>
+      <li><a href="#"><span class="ico" aria-hidden="true">≡</span><span>Tasks</span></a></li>
+      <li><a href="#"><span class="ico" aria-hidden="true">⌕</span><span>Search</span></a></li>
+      <li><a href="#"><span class="ico" aria-hidden="true">⋯</span><span>More</span></a></li>
+    </ul>
+  </nav>
+
+</div>
+<script>
+  // Bottom nav only shows at phone width — handled by media query (display:none default,
+  // overridden only inside the phone-style component; here we just toggle based on width).
+  const bn = document.querySelector('.bottomnav');
+  function syncBottomNav() {
+    bn.style.display = window.innerWidth < 760 ? 'block' : 'none';
+  }
+  syncBottomNav();
+  window.addEventListener('resize', syncBottomNav);
+</script>
+</body>
+</html>

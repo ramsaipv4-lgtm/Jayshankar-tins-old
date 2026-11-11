@@ -1,0 +1,18 @@
+{
+  "outFile": "money-trust-search/index.html",
+  "title": "Money, Trust & Search",
+  "tagline": "What's owed, what went wrong, and finding anything in seconds",
+  "chips": ["Customers", "Payments", "Returns", "Search"],
+  "closeTag": "Every rupee traced. Every claim reviewed. Everything findable.",
+  "scenes": [
+    { "image": "31-customers.png", "duration": 3.6, "kicker": "Customers", "headline": "Every buyer, tracked", "subline": "Credit limit, follow-up status, GST fields waiting for when they're needed." },
+    { "image": "32b-payments-customer.png", "duration": 4, "kicker": "Payments", "headline": "What they owe, and settling it", "subline": "Per-sale balances, computed live — never a second source of truth to drift out of sync." },
+    { "image": "06b-complaints.png", "duration": 3.8, "kicker": "Complaints", "headline": "Returns, handled fairly", "subline": "Genuine, false, or partial — each handled differently, and the false-claim option is real." },
+    { "image": "33-bill-whatsapp-share.png", "duration": 4, "kicker": "Sharing", "headline": "Share a bill, your way", "subline": "Editable message, optional picture, prices shown or hidden — nothing sent without you." },
+    { "image": "34-bill-reconcile-panel.png", "duration": 3.8, "kicker": "Reconciliation", "headline": "Every credit bill, resolved", "subline": "Settle now, or defer with a reminder — nothing just sits there forgotten." },
+    { "image": "36-fish-card.png", "duration": 3.6, "kicker": "Search", "headline": "Find a fish's full history", "subline": "Current stock oldest-first, and every purchase behind it." },
+    { "image": "38-customer-card.png", "duration": 3.4, "kicker": "Search", "headline": "...or a customer's", "subline": "Balance and full sale-by-sale trace, in one look." },
+    { "image": "40-vendor-card.png", "duration": 3.8, "kicker": "Search", "headline": "...or a vendor's", "subline": "What's owed to them, a ready-to-send message, their most-sold fish." },
+    { "image": "42-employee-card.png", "duration": 3.4, "kicker": "Search", "headline": "...or a teammate's", "subline": "Real activity, honestly scoped to what's actually been built." }
+  ]
+}

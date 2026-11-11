@@ -1,0 +1,229 @@
+<!doctype html>
+<!--
+Direction B · Surface 2 (phone) · FIELD SALE — bottom-sheet form over current state.
+Design call: Native iOS / Android bottom-sheet modal. The form is one sheet, dismissed
+on submit. Light mode. iOS visual language (systemBlue accent, hairline separators).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>B · Field sale · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg:#f2f2f7;
+  --card:#ffffff;
+  --separator:rgba(60,60,67,0.18);
+  --modal:rgba(255,255,255,0.96);
+  --ink:#1c1c1e;
+  --ink-2:#3a3a3c;
+  --ink-3:#8e8e93;
+  --accent:#007aff;
+  --accent-2:#34c759;
+  --accent-warn:#ff9500;
+  --accent-neg:#ff3b30;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg); color:var(--ink); height:100%; -webkit-font-smoothing:antialiased; }
+body { font-size:17px; line-height:1.4; }
+
+/* The blurred context scene behind the sheet — what rep is currently looking at */
+.scene-bg {
+  height:100vh; padding:max(env(safe-area-inset-top,0px),16px) 16px 16px;
+  display:flex; flex-direction:column; gap:18px;
+  filter:blur(2px);
+  background:linear-gradient(180deg,#f2f2f7 0%,#e5e5ea 100%);
+}
+
+.context {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:8px 0;
+}
+.context .where { font-size:13px; color:var(--ink-2); font-weight:500; }
+.context .signal { font-size:13px; color:var(--accent-2); font-weight:600; }
+
+.section-head h1 { font-size:32px; font-weight:700; margin:0 0 4px; letter-spacing:-0.02em; }
+.section-head p { font-size:15px; color:var(--ink-3); margin:0; }
+
+.recent { background:var(--card); border-radius:14px; padding:16px; }
+.recent .lab { font-size:13px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.6px; font-weight:600; margin-bottom:8px; }
+.recent ul { list-style:none; margin:0; padding:0; font-size:14px; }
+.recent li { padding:6px 0; display:flex; justify-content:space-between; color:var(--ink-2); }
+.recent li .v { color:var(--ink); font-variant-numeric:tabular-nums; }
+
+/* THE BOTTOM SHEET — modal over the scene */
+.scrim { position:fixed; inset:0; background:rgba(0,0,0,0.40); z-index:10; }
+.sheet {
+  position:fixed; left:0; right:0; bottom:0; z-index:11;
+  background:var(--modal); backdrop-filter:saturate(180%) blur(20px);
+  border-radius:18px 18px 0 0;
+  padding:8px 16px calc(16px + env(safe-area-inset-bottom,0px));
+  max-height:85vh; overflow-y:auto;
+  box-shadow:0 -4px 32px rgba(0,0,0,0.18);
+}
+.handle { width:36px; height:5px; border-radius:3px; background:rgba(60,60,67,0.30); margin:6px auto 12px; }
+
+/* Sheet header — iOS sheet pattern: bold title, descriptive caption */
+.sheet-head { padding:0 4px 12px; }
+.sheet-head h2 { font-size:22px; font-weight:700; margin:0 0 4px; letter-spacing:-0.01em; }
+.sheet-head .cap { font-size:13px; color:var(--ink-3); }
+
+/* Section within a sheet — iOS grouped section pattern (rounded card, hairlines between items) */
+.section { background:var(--card); border-radius:12px; margin-bottom:14px; overflow:hidden; }
+.section .row {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px; min-height:48px;
+  border-bottom:0.5px solid var(--separator);
+}
+.section .row:last-child { border-bottom:none; }
+.section .row .key { font-size:15px; font-weight:500; color:var(--ink); min-width:80px; }
+.section .row .val { flex:1; text-align:right; font-size:17px; font-weight:600; color:var(--ink); font-variant-numeric:tabular-nums; }
+.section .row .val.ph { color:var(--ink-3); font-weight:400; }
+.section .row .chev { color:var(--ink-3); font-size:15px; }
+
+/* Big number keypad-style stepper — for kg in the field. Big touch buttons, not a numeric
+   keyboard (which is finicky under cold-glove conditions). */
+.stepper {
+  display:flex; align-items:center; gap:14px;
+  padding:14px; background:var(--card); border-radius:12px; margin-bottom:14px;
+}
+.stepper .lbl { font-size:13px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.6px; min-width:60px; font-weight:600; }
+.stepper .v { flex:1; text-align:center; font-size:42px; font-weight:700; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; }
+.stepper .v .u { font-size:22px; color:var(--ink-3); font-weight:600; margin-left:4px; }
+.stepper button {
+  width:64px; height:64px; border-radius:14px; border:0; cursor:pointer;
+  font:inherit; font-size:28px; font-weight:600;
+  background:var(--bg); color:var(--ink);
+}
+.stepper button:active { background:#d1d1d6; transform:scale(0.97); }
+.stepper button.alt { background:#f1f1f4; font-size:18px; font-weight:500; }
+
+/* Price chip selector — only a few standardised prices per SKU */
+.price-row { display:flex; gap:6px; padding:12px 14px; flex-wrap:wrap; background:var(--card); border-radius:12px; margin-bottom:14px; }
+.price-chip {
+  font:inherit; font-size:14px; font-weight:600;
+  padding:8px 12px; border-radius:8px; border:0; cursor:pointer;
+  background:var(--bg); color:var(--ink); flex:1; text-align:center;
+  min-width:60px;
+}
+.price-chip.alt { background:#fff; border:0.5px solid var(--separator); flex-grow:0; padding:8px 14px; }
+.price-chip.selected { background:var(--accent); color:#fff; }
+
+/* Total bar — sticky bottom of sheet */
+.total-row {
+  background:var(--ink); color:#fff; border-radius:14px;
+  padding:14px 16px; margin:8px 0 14px;
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.total-row .l { font-size:13px; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.6px; font-weight:600; }
+.total-row .v { font-size:28px; font-weight:700; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
+
+/* Outbox / offline-pending — D30 */
+.outbox {
+  background:rgba(255,204,0,0.12); border:0.5px solid rgba(204,153,0,0.4);
+  color:#8a6d00;
+  border-radius:10px; padding:8px 12px; margin-bottom:12px;
+  font-size:13px; line-height:1.4; display:flex; gap:8px; align-items:center;
+}
+
+.submit { display:flex; gap:10px; }
+.submit .cancel {
+  flex:1; height:52px; border-radius:14px; border:0; cursor:pointer;
+  background:transparent; color:var(--accent); font:inherit; font-size:17px; font-weight:500;
+}
+.submit .primary {
+  flex:2; height:52px; border-radius:14px; border:0; cursor:pointer;
+  background:var(--accent); color:#fff; font:inherit; font-size:18px; font-weight:600;
+  box-shadow:0 4px 14px rgba(0,122,255,0.30);
+}
+.submit .primary:active { transform:scale(0.98); }
+
+</style>
+</head>
+<body>
+
+<!-- The page underneath the sheet — what the rep is currently looking at -->
+<div class="scene-bg">
+  <div class="context">
+    <div class="where">📍 At Saravana Stores</div>
+    <div class="signal">4G · good</div>
+  </div>
+  <div class="section-head">
+    <h1>Today</h1>
+    <p>5 pickups remaining · 1 ready now</p>
+  </div>
+  <div class="recent">
+    <div class="lab">Just sold</div>
+    <ul>
+      <li><span>3.5 kg Pomfret · Saravana · 11:42 am</span><span class="v">₹1,330</span></li>
+      <li><span>2.0 kg Squid · Anand · 11:14 am</span><span class="v">₹600</span></li>
+      <li><span>6.0 kg Mackerel · Coastal Kitchen · 10:48 am</span><span class="v">₹1,800</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- The sheet -->
+<div class="scrim" role="presentation"></div>
+<form class="sheet" onsubmit="event.preventDefault();">
+
+  <div class="handle"></div>
+
+  <div class="sheet-head">
+    <h2>New sale</h2>
+    <div class="cap">Saravana Stores · 3.5 kg · ₹380/kg</div>
+  </div>
+
+  <!-- Buyer — pre-filled because rep is at the buyer's shop right now. D31 rule: never
+       publish a price; the per-transaction price is whatever the rep and buyer agreed on. -->
+  <div class="section">
+    <div class="row">
+      <div class="key">Buyer</div>
+      <div class="val">Saravana Stores</div>
+      <div class="chev">›</div>
+    </div>
+    <div class="row">
+      <div class="key">SKU</div>
+      <div class="val">Pomfret · TC-DEMO-01</div>
+      <div class="chev">›</div>
+    </div>
+  </div>
+
+  <!-- Quantity — stepper, not free input. Cold-glove friendly. -->
+  <div class="stepper">
+    <span class="lbl">kg</span>
+    <button type="button" class="alt" aria-label="decrease">−</button>
+    <div class="v" id="kg">3.5<span class="u">kg</span></div>
+    <button type="button" aria-label="increase">＋</button>
+  </div>
+
+  <!-- Price — chips for the standard prices the rep's phones have accepted in the last 7
+       days, plus a custom input. -->
+  <div class="price-row">
+    <button class="price-chip alt" aria-label="Custom price">Custom</button>
+    <button class="price-chip">₹360</button>
+    <button class="price-chip selected">₹380</button>
+    <button class="price-chip">₹400</button>
+  </div>
+
+  <div class="total-row">
+    <div class="l">Total</div>
+    <div class="v" id="total">₹1,330</div>
+  </div>
+
+  <div class="outbox">
+    <strong>Offline-tolerant.</strong> If signal drops now, the sale enters the outbox and
+    syncs when 3G returns.
+  </div>
+
+  <div class="submit">
+    <button class="cancel" type="button">Cancel</button>
+    <button class="primary" type="submit">✓ Record sale</button>
+  </div>
+</form>
+
+</body>
+</html>

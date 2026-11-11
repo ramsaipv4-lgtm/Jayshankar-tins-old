@@ -1,0 +1,259 @@
+<!doctype html>
+<!--
+Direction A · Surface 1 (phone) · FLOOR PICK-LIST.
+Design call: Toast KDS aesthetic. Big colored status cards per container, swipe gesture
+implied. Light mode. Voice/scan primitives instead of typed pickers.
+Real seed numbers: TC-DEMO-01 + RUN_ID, 12kg @ ₹380 to Saravana, 4kg @ ₹560 partial-payment,
+6kg @ ₹500 to Green Leaf over its ₹2,000 limit. Demo Warehouse. Murugan / Karthik /
+Ravi vendor names. The container_ownership is "vendor_provided" per the seed script.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>A · Floor pick-list · Jayshankar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg:#f4f5f3;       /* kitchen-display off-white, slightly warm */
+  --card:#ffffff;
+  --border:1px solid #e8e6e1;
+  --ink-0:#1a1916;
+  --ink-1:#54524b;
+  --ink-2:#8c8a83;
+  --accent:#0f7a4f;   /* Toast status-green — "ready to go" */
+  --accent-warn:#b54a07;
+  --accent-neg:#b21b1b;
+  --accent-soft:#dcecdc;
+  --accent-warn-soft:#ffeacc;
+  --accent-neg-soft:#fbd6d3;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  font-family:Inter,system-ui,sans-serif;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:var(--bg); color:var(--ink-0); height:100%; }
+body { font-size:17px; line-height:1.4; -webkit-font-smoothing:antialiased; }
+
+/* NO topnav. No bottom-tab. Single-screen hero app. The phone status bar is the only chrome. */
+
+.scene { padding:max(env(safe-area-inset-top,0px),12px) 12px 0; min-height:100vh; display:flex; flex-direction:column; }
+
+/* Header band: who, where, when — concise */
+.context {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:6px 0 16px;
+}
+.context .where { font-size:12px; color:var(--ink-2); text-transform:uppercase; letter-spacing:1.2px; font-weight:600; }
+.context .when { font-size:12px; color:var(--ink-1); font-family:var(--mono); }
+
+/* Big primary CTA, "what to do next" — Toast hero */
+.next-card {
+  background:var(--ink-0); color:#fff;
+  border-radius:18px;
+  padding:22px 20px 18px;
+  margin-bottom:18px;
+  cursor:pointer;
+  box-shadow:0 6px 22px rgba(26,25,22,0.18);
+}
+.next-card .kicker { font-size:11px; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:1.6px; font-weight:700; margin-bottom:8px; }
+.next-card h1 { font-size:30px; font-weight:700; line-height:1.1; margin:0 0 14px; letter-spacing:-0.02em; }
+.next-card .what { font-size:18px; font-weight:500; color:rgba(255,255,255,0.85); margin-bottom:18px; line-height:1.35; }
+.next-card .route { display:flex; gap:14px; align-items:center; font-size:13px; color:rgba(255,255,255,0.55); font-family:var(--mono); }
+.next-card .route .arrow { font-size:20px; color:rgba(255,255,255,0.4); }
+.next-card .primary { margin-top:22px; width:100%; padding:18px 0; border-radius:12px; border:0; background:#fff; color:var(--ink-0); font:inherit; font-size:18px; font-weight:700; letter-spacing:-0.01em; cursor:pointer; }
+.next-card .primary:active { transform:scale(0.98); }
+
+/* Section header */
+.section-head { display:flex; align-items:center; justify-content:space-between; padding:18px 0 10px; }
+.section-head h2 { font-size:13px; font-weight:700; color:var(--ink-2); text-transform:uppercase; letter-spacing:1.4px; margin:0; }
+.section-head .count { font-size:13px; color:var(--ink-2); font-family:var(--mono); }
+
+/* The list of containers waiting — KDS-style status */
+.queue { display:flex; flex-direction:column; gap:8px; }
+
+/* A container card. Not "a tile" — a row, because the worker is scanning, not clicking. */
+.row {
+  display:flex; align-items:center; gap:14px;
+  background:var(--card); border:var(--border);
+  border-radius:14px; padding:14px 16px;
+  cursor:pointer; position:relative;
+}
+.row .swatch {
+  width:8px; align-self:stretch; border-radius:4px;
+  flex-shrink:0;
+}
+.row.ready .swatch { background:var(--accent); }
+.row.warn .swatch { background:var(--accent-warn); }
+.row.neg .swatch { background:var(--accent-neg); }
+.row.dim .swatch { background:#c8c5be; }
+
+.row .left { flex:1; min-width:0; }
+.row .head { display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+.row .id { font-family:var(--mono); font-size:13px; font-weight:600; color:var(--ink-1); }
+.row .status { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:3px 8px; border-radius:6px; }
+.row.ready .status { background:var(--accent-soft); color:var(--accent); }
+.row.warn .status { background:var(--accent-warn-soft); color:var(--accent-warn); }
+.row.neg .status { background:var(--accent-neg-soft); color:var(--accent-neg); }
+.row.dim .status { background:#ece8e0; color:var(--ink-2); }
+.row .main { font-size:18px; font-weight:600; color:var(--ink-0); margin-top:4px; line-height:1.25; }
+.row .sub { font-size:13px; color:var(--ink-1); margin-top:2px; line-height:1.35; }
+.row .meta { font-family:var(--mono); font-size:13px; color:var(--ink-1); text-align:right; white-space:nowrap; }
+.row .price { font-weight:700; color:var(--ink-0); }
+.row .arrow { font-size:22px; color:var(--ink-2); margin-left:4px; }
+
+/* Voice / scan strip — bottom of screen, the alternative-input affordance */
+.assist-bar {
+  position:fixed; left:12px; right:12px; bottom:max(env(safe-area-inset-bottom,0px),10px);
+  display:flex; gap:8px;
+}
+.assist-bar button {
+  flex:1; height:52px; border-radius:14px; border:0; cursor:pointer;
+  font:inherit; font-size:15px; font-weight:600;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.assist-bar .scan { background:var(--ink-0); color:#fff; }
+.assist-bar .voice { background:var(--card); color:var(--ink-0); border:var(--border); }
+.assist-bar .ico { font-size:18px; }
+
+/* Offline-pending banner (D30, in scope per operational reality §8). Always visible if any
+   writes are queued — proves the design owns the offline reality, doesn't hide it. */
+.offline-banner {
+  background:#fff7c2; color:#6b5300; border:1px solid #f0d878;
+  border-radius:12px;
+  padding:10px 14px; font-size:13px; line-height:1.4;
+  display:flex; align-items:center; gap:10px; margin-bottom:14px;
+}
+.offline-banner .dot { width:8px; height:8px; border-radius:50%; background:#c89a1c; flex-shrink:0; animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+</style>
+</head>
+<body>
+<div class="scene">
+
+  <!-- Worker context, top -->
+  <div class="context">
+    <div class="where">📍 Demo Warehouse · Main</div>
+    <div class="when" id="clock">06:14 IST</div>
+  </div>
+
+  <!-- Offline-pending banner — always visible if any writes are queued. -->
+  <div class="offline-banner">
+    <span class="dot"></span>
+    <span><strong>2 writes queued</strong> — will sync when 3G returns</span>
+  </div>
+
+  <!-- Hero "what to do next" — single primary task -->
+  <div class="next-card">
+    <div class="kicker">Next</div>
+    <h1>Hand TC-DEMO-01 to Saravana Stores</h1>
+    <div class="what">3.5 kg Pomfret · collected by Anitha · ₹1,330 due (cash on pickup, no change)</div>
+    <div class="route">
+      <span>Cold-room B-2</span>
+      <span class="arrow">→</span>
+      <span>Saravana's bike · Royapuram</span>
+      <span class="arrow">→</span>
+      <span>Buyer pickup</span>
+    </div>
+    <button class="primary" aria-label="Mark handed over, scan next">✓ Handed over · scan next</button>
+  </div>
+
+  <!-- Pending queue — KDS-style status colors -->
+  <div class="section-head">
+    <h2>Pending pickups today</h2>
+    <div class="count">5</div>
+  </div>
+
+  <div class="queue">
+
+    <button class="row ready" aria-label="Ready — Green Leaf Hotel sale, Squid 6kg">
+      <div class="swatch"></div>
+      <div class="left">
+        <div class="head">
+          <span class="id">TC-DEMO-02-1707000b</span>
+          <span class="status">Ready</span>
+        </div>
+        <div class="main">Squid · 6 kg · Green Leaf Hotel</div>
+        <div class="sub">Sale #4512 · ₹3,000 (over ₹2,000 limit — flag to admin)</div>
+      </div>
+      <div class="meta"><div class="price">₹500/kg</div>7m ago</div>
+      <div class="arrow">›</div>
+    </button>
+
+    <button class="row warn" aria-label="Warning — Saravana partial payment sale, Pomfret 4kg, balance due">
+      <div class="swatch"></div>
+      <div class="left">
+        <div class="head">
+          <span class="id">TC-DEMO-01-1707000a</span>
+          <span class="status">Balance due</span>
+        </div>
+        <div class="main">Pomfret · 4 kg · Saravana Stores</div>
+        <div class="sub">Sale #4508 · partial 60% paid · ₹896 due · tomorrow's visit</div>
+      </div>
+      <div class="meta"><div class="price">₹560/kg</div>22m ago</div>
+      <div class="arrow">›</div>
+    </button>
+
+    <button class="row ready">
+      <div class="swatch"></div>
+      <div class="left">
+        <div class="head">
+          <span class="id">TC-DEMO-03-1707000c</span>
+          <span class="status">Ready</span>
+        </div>
+        <div class="main">Prawns · 2 kg · Anand (corner shop)</div>
+        <div class="sub">Sale #4513 · morning haul · Suresh to deliver</div>
+      </div>
+      <div class="meta"><div class="price">₹420/kg</div>1h ago</div>
+      <div class="arrow">›</div>
+    </button>
+
+    <button class="row neg" aria-label="Over limit — Green Leaf Hotel over its ₹2000 credit limit">
+      <div class="swatch"></div>
+      <div class="left">
+        <div class="head">
+          <span class="id">CB-100226</span>
+          <span class="status">Over credit</span>
+        </div>
+        <div class="main">Green Leaf Hotel · outstanding</div>
+        <div class="sub">₹3,000 today on a ₹2,000 limit · 7-day terms · owner to confirm cash</div>
+      </div>
+      <div class="meta"><div>notify admin</div></div>
+      <div class="arrow">›</div>
+    </button>
+
+    <button class="row dim">
+      <div class="swatch"></div>
+      <div class="left">
+        <div class="head">
+          <span class="id">BILL-0031</span>
+          <span class="status">In transit</span>
+        </div>
+        <div class="main">Selvam (Ennore) · 12 kg Mackerel</div>
+        <div class="sub">Billed 12 kg · measured 11.5 kg on arrival · 0.5 kg short · admin alerted</div>
+      </div>
+      <div class="meta"><div>discrepancy</div></div>
+      <div class="arrow">›</div>
+    </button>
+
+  </div>
+
+  <!-- Voice / scan alternative input. Worker can scan QR or speak instead of typing. -->
+  <div class="assist-bar">
+    <button class="voice" aria-label="Voice input"><span class="ico">🎙</span> Voice</button>
+    <button class="scan" aria-label="Scan QR"><span class="ico">⊟</span> Scan QR</button>
+  </div>
+
+</div>
+<script>
+  // Clock ticks — proof the design owns local time.
+  const fmt = () => {
+    const d = new Date();
+    return d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:false }) + ' IST';
+  };
+  document.getElementById('clock').textContent = fmt();
+  setInterval(() => { document.getElementById('clock').textContent = fmt(); }, 30000);
+</script>
+</body>
+</html>

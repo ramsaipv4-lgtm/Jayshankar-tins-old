@@ -1,0 +1,23 @@
+{
+  "_comment": "delegation/ORCHESTRATION.json — normally the run config for an orchestrate.mjs-driven autonomous build (D32). Kept here in a self-parallel round PURELY to record the tier policy the manually-relayed MiniMax M3 worker is expected to follow, since delegation/README.md deliberately reuses WORKER-SESSION.md's tight-brief shape. workerCmd is intentionally blank and scripts/orchestrate.mjs is NOT used for dispatch in this project — the user is the relay. See delegation/README.md 'The setup' for the full reasoning.",
+
+  "harness": "generic",
+  "_harness": "Not applicable in the orchestrate.mjs sense here (no scripted dispatch). Left as 'generic' for schema consistency only.",
+
+  "workerCmd": "",
+  "_workerCmd": "Intentionally blank. MiniMax Coder is a Windows GUI desktop app with no CLI hook to shell out to — dispatch is manual (the user copies delegation/tasks/<id>/WORKER-PROMPT.md into MiniMax Coder and copies the result back). Do not fill this in unless MiniMax Coder ever exposes a scriptable CLI/headless mode, at which point this round should probably be re-recorded as auditor-remote instead of self-parallel.",
+
+  "maxParallel": 1,
+  "_maxParallel": "One worker (MiniMax M3), one task at a time, manually relayed. No concurrency.",
+
+  "maxRetries": 1,
+  "_maxRetries": "If a returned task fails audit, it goes back to MiniMax once with specific, concrete fixes named by the auditor — never patched by Claude directly (same 'a session that wrote the code is the wrong session to judge it' principle the kit applies to its own auditor/worker split). A second failure escalates to the user rather than a second silent retry.",
+
+  "tierPolicy": {
+    "autoDecide": ["T0", "T1"]
+  },
+  "_tierPolicy": "Same as the kit default: MiniMax may decide T0 (mechanical, reversible, already settled by spec) and T1 (judgement inside locked scope — but must write the reasoning in its returned notes) alone. T2 (irreversible, externally visible, spec-contradicting, or below its own confidence) always stops and comes back to the user via the relay. Uncertainty resolves to T2, never T1 — see tins-kit/lib/patterns/tiered-escalation.md.",
+
+  "haltOn": [],
+  "_haltOn": "Not applicable to a single-task-per-round manual relay — kept empty for schema consistency with the kit template."
+}

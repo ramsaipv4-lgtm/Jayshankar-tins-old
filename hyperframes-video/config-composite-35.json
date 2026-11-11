@@ -1,0 +1,23 @@
+{
+  "dir": "composite-35-running-low-repack",
+  "videoFile": "35-running-low-repack.mp4",
+  "videoId": "composite-35-recording",
+  "rawDuration": 48.16,
+  "titleKicker": "Jayshankar · Tutorial",
+  "titleBrand": "Running Low Mid-Shift",
+  "titleTag": "Pack, sell most of it, then repack what's left into a smaller tub.",
+  "headerKicker": "Tutorial · Repacking",
+  "headerHeadline": "Running Low Mid-Shift",
+  "captions": [
+    { "text": "Sign in, start with a small delivery", "start": 2.5, "dur": 6.0 },
+    { "text": "Vendor, fish, kg — submitted", "start": 8.5, "dur": 6.0 },
+    { "text": "Pack it all into a small spare tub", "start": 14.5, "dur": 6.0 },
+    { "text": "Sell every bit of it — that tub is now empty", "start": 20.5, "dur": 8.0 },
+    { "text": "A full 10kg delivery comes in next", "start": 28.5, "dur": 6.0 },
+    { "text": "Packed into its own container", "start": 34.5, "dur": 6.0 },
+    { "text": "Sell most of it — a little left over", "start": 40.5, "dur": 8.0 },
+    { "text": "Repack the dregs into that empty spare tub from earlier", "start": 48.5, "dur": 2.16 }
+  ],
+  "closeBrand": "Jayshankar",
+  "closeTag": "A container only ever exists already-filled — an empty tub has to be earned by selling one out."
+}

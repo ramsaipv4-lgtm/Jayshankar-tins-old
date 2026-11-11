@@ -1,0 +1,20 @@
+{
+  "dir": "composite-36-delegate-complete",
+  "videoFile": "36-delegate-complete.mp4",
+  "videoId": "composite-36-recording",
+  "rawDuration": 24.28,
+  "titleKicker": "Jayshankar · Tutorial",
+  "titleBrand": "Delegate & Auto-Complete",
+  "titleTag": "Admin assigns the work — it closes itself the moment it's actually done.",
+  "headerKicker": "Tutorial · Task Delegation",
+  "headerHeadline": "Delegate & Auto-Complete",
+  "captions": [
+    { "text": "Admin picks a vendor, then a task type", "start": 2.5, "dur": 6.0 },
+    { "text": "Assign it straight to an employee", "start": 8.5, "dur": 4.0 },
+    { "text": "She signs in and sees it under My tasks", "start": 12.5, "dur": 4.0 },
+    { "text": "Same vendor, same fish — she just does the delivery", "start": 16.5, "dur": 6.0 },
+    { "text": "Done — the task closes itself, no extra step", "start": 22.5, "dur": 4.28 }
+  ],
+  "closeBrand": "Jayshankar",
+  "closeTag": "No \"mark complete\" button — the real action is the proof."
+}

@@ -1,0 +1,40 @@
+# .github/workflows/validate.yml
+#
+# TINS kit CI: runs the kit's own validator + selftest on every push and PR.
+# Zero-dep (Node 22 only). Gates the kit's growth: a new pattern that
+# breaks the gate cannot be merged.
+#
+# Consumers can copy this file to their own .github/workflows/ to gate their
+# consumer-side validator.
+
+name: tins-kit validate
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  validate:
+    name: validate + selftest
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run kit inventory (the --all check)
+        run: node scripts/validate.mjs --all
+
+      - name: Run validator self-test
+        run: node --test scripts/selftest.mjs
+
+      - name: Run kit listing (sanity)
+        run: node scripts/kit-listing.mjs

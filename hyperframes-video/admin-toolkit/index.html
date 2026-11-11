@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0b1120; }
+      body { font-family: "Inter", sans-serif; }
+      .clip { position: absolute; inset: 0; }
+      .inner { position: absolute; inset: 0; }
+      #bg {
+        background:
+          radial-gradient(1200px 700px at 18% 10%, rgba(99,102,241,0.35), transparent 60%),
+          radial-gradient(1000px 900px at 85% 90%, rgba(56,189,248,0.16), transparent 55%),
+          linear-gradient(160deg, #0b1120 0%, #10172a 55%, #0b1120 100%);
+      }
+      .browser-frame {
+        position: absolute; left: 50%; top: 300px; transform: translateX(-50%);
+        width: 1200px; border-radius: 18px; overflow: hidden;
+        box-shadow: 0 40px 90px -20px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06);
+        background: #e5e7eb;
+      }
+      .browser-frame .chrome { height: 34px; background: #f1f5f9; display: flex; align-items: center; gap: 7px; padding: 0 14px; border-bottom: 1px solid #e2e8f0; }
+      .browser-frame .chrome span { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+      .browser-frame .chrome span:nth-child(1) { background: #f87171; }
+      .browser-frame .chrome span:nth-child(2) { background: #fbbf24; }
+      .browser-frame .chrome span:nth-child(3) { background: #34d399; }
+      .browser-frame img { display: block; width: 1200px; height: auto; }
+      .kicker { position: absolute; left: 160px; top: 96px; font-size: 22px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #a5b4fc; }
+      .headline { position: absolute; left: 160px; top: 130px; font-size: 46px; font-weight: 800; color: #f8fafc; max-width: 1400px; line-height: 1.15; }
+      .subline { position: absolute; left: 160px; top: 200px; font-size: 22px; font-weight: 500; color: #cbd5e1; max-width: 1300px; }
+      .titlecard { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+      .titlecard .brand { font-size: 96px; font-weight: 800; color: #f8fafc; letter-spacing: -0.02em; }
+      .titlecard .subtitle { font-size: 40px; font-weight: 700; color: #a5b4fc; margin-top: 10px; }
+      .titlecard .tag { font-size: 28px; font-weight: 500; color: #cbd5e1; margin-top: 22px; max-width: 1200px; }
+      .titlecard .chip-row { display: flex; gap: 14px; margin-top: 46px; flex-wrap: wrap; justify-content: center; max-width: 1400px; }
+      .titlecard .chip { font-size: 18px; font-weight: 700; color: #eef2ff; border: 1px solid rgba(165,180,252,0.5); border-radius: 999px; padding: 10px 22px; background: rgba(49,46,129,0.85); }
+      .closecard .brand { font-size: 76px; font-weight: 800; color: #f8fafc; }
+      .closecard .tag { font-size: 26px; font-weight: 500; color: #a5b4fc; margin-top: 18px; max-width: 1100px; text-align: center; line-height: 1.5; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="47.6" data-width="1920" data-height="1080">
+
+      <div id="bg" class="clip" data-start="0" data-duration="47.6" data-track-index="0"></div>
+
+      <!-- 1. Title card -->
+      <div id="s-title" class="clip" data-start="0" data-duration="3.4" data-track-index="1"><div class="inner titlecard">
+        <div class="brand">Jayshankar</div>
+        <div class="subtitle">Admin &amp; Setup</div>
+        <div class="tag">Everything a wholesaler configures once, then rarely touches again</div>
+        <div class="chip-row">
+          <div class="chip">Fish types</div>
+          <div class="chip">Warehouses</div>
+          <div class="chip">Vendors</div>
+          <div class="chip">Team</div>
+          <div class="chip">Tasks</div>
+        </div>
+      </div></div>
+
+      <!-- 2. Every fish, catalogued -->
+      <div id="s-0" class="clip" data-start="3.40" data-duration="3.6" data-track-index="1"><div class="inner">
+        <div class="kicker">Fish types</div>
+        <div class="headline">Every fish, catalogued</div>
+        <div class="subline">Category, size grade, shelf life, storage type — one place, editable by admin.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/20-skus-list.png" /></div>
+      </div></div>
+
+      <!-- 3. Add a new one in seconds -->
+      <div id="s-1" class="clip" data-start="7.00" data-duration="3.6" data-track-index="1"><div class="inner">
+        <div class="kicker">Fish types</div>
+        <div class="headline">Add a new one in seconds</div>
+        <div class="subline">Name and size up front; the rest defaults sensibly and stays optional.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/21-sku-form.png" /></div>
+      </div></div>
+
+      <!-- 4. Ready to grow beyond one site -->
+      <div id="s-2" class="clip" data-start="10.60" data-duration="3.4" data-track-index="1"><div class="inner">
+        <div class="kicker">Warehouses</div>
+        <div class="headline">Ready to grow beyond one site</div>
+        <div class="subline">Add a warehouse any time — its in-transit locations are created automatically.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/22-warehouses.png" /></div>
+      </div></div>
+
+      <!-- 5. Every fisherman, one screen -->
+      <div id="s-3" class="clip" data-start="14.00" data-duration="3.4" data-track-index="1"><div class="inner">
+        <div class="kicker">Vendors</div>
+        <div class="headline">Every fisherman, one screen</div>
+        <div class="subline">Phone, port, typical catch, reliability — the people stock actually comes from.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/23-vendors-list.png" /></div>
+      </div></div>
+
+      <!-- 6. Onboard a new one directly -->
+      <div id="s-4" class="clip" data-start="17.40" data-duration="3.6" data-track-index="1"><div class="inner">
+        <div class="kicker">Vendors</div>
+        <div class="headline">Onboard a new one directly</div>
+        <div class="subline">No more falling back to raw SQL to add a vendor the app didn't know about.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/24-vendor-form.png" /></div>
+      </div></div>
+
+      <!-- 7. Your whole team, one screen -->
+      <div id="s-5" class="clip" data-start="21.00" data-duration="3.4" data-track-index="1"><div class="inner">
+        <div class="kicker">Team</div>
+        <div class="headline">Your whole team, one screen</div>
+        <div class="subline">Role labels that describe the job, not the database column.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/25-team-list.png" /></div>
+      </div></div>
+
+      <!-- 8. Roles — and who can self-approve -->
+      <div id="s-6" class="clip" data-start="24.40" data-duration="4" data-track-index="1"><div class="inner">
+        <div class="kicker">Team</div>
+        <div class="headline">Roles — and who can self-approve</div>
+        <div class="subline">Only admin/co-admin can ever skip the review step on their own reversals.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/26b-team-edit-self-admin.png" /></div>
+      </div></div>
+
+      <!-- 9. Every change, logged -->
+      <div id="s-7" class="clip" data-start="28.40" data-duration="3.4" data-track-index="1"><div class="inner">
+        <div class="kicker">Audit log</div>
+        <div class="headline">Every change, logged</div>
+        <div class="subline">Who changed what, and when — nothing silently overwritten.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/27-audit-log.png" /></div>
+      </div></div>
+
+      <!-- 10. Assign by hand, or let it balance the load -->
+      <div id="s-8" class="clip" data-start="31.80" data-duration="4" data-track-index="1"><div class="inner">
+        <div class="kicker">Tasks</div>
+        <div class="headline">Assign by hand, or let it balance the load</div>
+        <div class="subline">Round-robin picks whoever's least busy — and reassigns automatically if a role ever changes.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/28-task-delegation.png" /></div>
+      </div></div>
+
+      <!-- 11. Move stock between warehouses -->
+      <div id="s-9" class="clip" data-start="35.80" data-duration="3.8" data-track-index="1"><div class="inner">
+        <div class="kicker">Transfer</div>
+        <div class="headline">Move stock between warehouses</div>
+        <div class="subline">Cross-warehouse only — moving stock within one site is a repack, not a transfer.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/29-transfer-form.png" /></div>
+      </div></div>
+
+      <!-- 12. Record a loss honestly -->
+      <div id="s-10" class="clip" data-start="39.60" data-duration="3.4" data-track-index="1"><div class="inner">
+        <div class="kicker">Spoilage</div>
+        <div class="headline">Record a loss honestly</div>
+        <div class="subline">Every kg written off is tracked, not quietly subtracted.</div>
+        <div class="browser-frame"><div class="chrome"><span></span><span></span><span></span></div><img src="assets/30-spoilage-form.png" /></div>
+      </div></div>
+
+      <!-- Close card -->
+      <div id="s-close" class="clip" data-start="43.00" data-duration="4.6" data-track-index="1"><div class="inner closecard" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+        <div class="brand">Jayshankar</div>
+        <div class="tag">Set it up once. The rest of the app just runs on top of it.</div>
+      </div></div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      function fadeScene(id, start, dur) {
+        const inD = 0.5, outD = 0.5;
+        tl.fromTo('#' + id + ' .inner', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: inD, ease: 'power2.out' }, start);
+        tl.to('#' + id + ' .inner', { autoAlpha: 0, y: -12, duration: outD, ease: 'power2.in' }, start + dur - outD);
+        tl.set('#' + id + ' .inner', { autoAlpha: 0 }, start + dur);
+      }
+      function fadeFrame(id, start) {
+        tl.fromTo('#' + id + ' .browser-frame', { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'power3.out' }, start + 0.15);
+      }
+
+      tl.fromTo('#s-title .brand', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.1);
+      tl.fromTo('#s-title .subtitle', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.45);
+      tl.fromTo('#s-title .tag', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.75);
+      tl.fromTo('#s-title .chip', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power2.out' }, 1.05);
+      tl.to('#s-title .inner', { autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 2.90);
+      tl.set('#s-title .inner', { autoAlpha: 0 }, 3.4);
+
+      fadeScene('s-0', 3.40, 3.6); fadeFrame('s-0', 3.40);
+      fadeScene('s-1', 7.00, 3.6); fadeFrame('s-1', 7.00);
+      fadeScene('s-2', 10.60, 3.4); fadeFrame('s-2', 10.60);
+      fadeScene('s-3', 14.00, 3.4); fadeFrame('s-3', 14.00);
+      fadeScene('s-4', 17.40, 3.6); fadeFrame('s-4', 17.40);
+      fadeScene('s-5', 21.00, 3.4); fadeFrame('s-5', 21.00);
+      fadeScene('s-6', 24.40, 4); fadeFrame('s-6', 24.40);
+      fadeScene('s-7', 28.40, 3.4); fadeFrame('s-7', 28.40);
+      fadeScene('s-8', 31.80, 4); fadeFrame('s-8', 31.80);
+      fadeScene('s-9', 35.80, 3.8); fadeFrame('s-9', 35.80);
+      fadeScene('s-10', 39.60, 3.4); fadeFrame('s-10', 39.60);
+
+      tl.fromTo('#s-close .brand', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 43.20);
+      tl.fromTo('#s-close .tag', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 43.70);
+
+      window.__timelines['main'] = tl;
+    </script>
+  </body>
+</html>
